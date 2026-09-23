@@ -6,12 +6,12 @@ This project is a software platform/dashboard for organizing and displaying samp
 
 ## Team Members
 
-- Ayla
+- Ayla Monera
 - Russel Roper
-- Gurshan
+- Gurshan Sidhu
 - Will Kuch
-- Ishan
-- Alex
+- Ishan Saini
+- Alex Benny
 
 ## Features
 
