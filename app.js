@@ -9,16 +9,20 @@ if (form) {
 
     record.id = Date.now();
     record.submittedAt = new Date().toISOString();
-    record.weight = Number(record.weight);
 
     const savedRecords = JSON.parse(
       localStorage.getItem("collectionRecords") || "[]"
     );
 
     savedRecords.push(record);
-    localStorage.setItem("collectionRecords", JSON.stringify(savedRecords));
+
+    localStorage.setItem(
+      "collectionRecords",
+      JSON.stringify(savedRecords)
+    );
 
     alert("Collection record saved successfully.");
+
     form.reset();
   });
 }
