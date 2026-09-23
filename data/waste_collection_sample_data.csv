@@ -1,0 +1,106 @@
+Record ID,Driver/Employee Name,Date,Time,Building/Location,Bin ID,Waste Stream,Container Type/Size,Fullness Level (%),Photo Taken,Photo URL,Contamination Observed,Contamination Type,Service Completed,Overflow/Material Outside Bin,Damaged Bin/Maintenance Issue,Maintenance Notes,Additional Comments
+WC-0001,Jasmine Chen,2026-09-08,8:00,Library,L-L02,Landfill,64-gal toter,100,Yes,https://example.com/photos/collection_0001.jpg,No,,Yes,No,Yes,"Wheel damaged, hard to move",Coordinated with building manager on placement.
+WC-0002,Priya Patel,2026-09-08,10:00,University Union,UU-R02,Recycling,32-gal toter,25,Yes,https://example.com/photos/collection_0002.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0003,David Ortiz,2026-09-08,11:30,Library,L-L02,Landfill,32-gal toter,0,Yes,https://example.com/photos/collection_0003.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0004,Marcus Alvarez,2026-09-08,6:15,Library,L-C02,Compost,32-gal toter,50,Yes,https://example.com/photos/collection_0004.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0005,Jasmine Chen,2026-09-08,10:00,Santa Clara Hall,SCH-R02,Recycling,64-gal toter,100,Yes,https://example.com/photos/collection_0005.jpg,No,,Yes,Yes,No,,"Overflow material found beside bin, extra pass recommended."
+WC-0006,Jasmine Chen,2026-09-08,6:30,Del Norte Hall,DNH-R02,Recycling,32-gal toter,75,Yes,https://example.com/photos/collection_0006.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0007,Jasmine Chen,2026-09-08,10:15,Sequoia Hall,SH-C02,Cardboard,Baler bin,25,Yes,https://example.com/photos/collection_0007.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0008,Kevin Nguyen,2026-09-08,13:00,Yosemite Hall,YH-C01,Compost,32-gal toter,0,Yes,https://example.com/photos/collection_0008.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0009,Kevin Nguyen,2026-09-08,10:00,Library,L-C02,Cardboard,Baler bin,0,Yes,https://example.com/photos/collection_0009.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0010,Marcus Alvarez,2026-09-08,10:15,Jacinto Hall,JH-C01,Cardboard,Baler bin,100,Yes,https://example.com/photos/collection_0010.jpg,No,,Yes,Yes,No,,Area around bin was clean.
+WC-0011,David Ortiz,2026-09-08,13:00,Santa Clara Hall,SCH-R01,Recycling,Single-stream cart,0,Yes,https://example.com/photos/collection_0011.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0012,Marcus Alvarez,2026-09-08,14:15,Sequoia Hall,SH-L01,Landfill,Dumpster,25,Yes,https://example.com/photos/collection_0012.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0013,David Ortiz,2026-09-08,12:30,Napa Hall,NH-C01,Cardboard,Cardboard cage,75,No,,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0014,Marcus Alvarez,2026-09-09,6:15,Del Norte Hall,DNH-R01,Recycling,32-gal toter,0,Yes,https://example.com/photos/collection_0014.jpg,No,,Yes,No,No,,
+WC-0015,Kevin Nguyen,2026-09-09,13:15,Solano Hall,SH-R01,Recycling,Single-stream cart,75,Yes,https://example.com/photos/collection_0015.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0016,Marcus Alvarez,2026-09-09,12:30,Yosemite Hall,YH-C01,Cardboard,Cardboard cage,0,Yes,https://example.com/photos/collection_0016.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0017,Kevin Nguyen,2026-09-09,7:00,Solano Hall,SH-R01,Recycling,64-gal toter,100,Yes,https://example.com/photos/collection_0017.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0018,Jasmine Chen,2026-09-09,12:00,Solano Hall,SH-R02,Recycling,32-gal toter,75,Yes,https://example.com/photos/collection_0018.jpg,No,,Yes,No,No,,
+WC-0019,David Ortiz,2026-09-09,9:00,Del Norte Hall,DNH-C01,Cardboard,Cardboard cage,100,Yes,https://example.com/photos/collection_0019.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0020,Marcus Alvarez,2026-09-09,7:15,AS Recreation Center,ARC-L01,Landfill,64-gal toter,75,Yes,https://example.com/photos/collection_0020.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0021,David Ortiz,2026-09-09,9:30,University Union,UU-L02,Landfill,96-gal toter,100,Yes,https://example.com/photos/collection_0021.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0022,Kevin Nguyen,2026-09-09,9:30,University Union,UU-C01,Cardboard,Cardboard cage,25,Yes,https://example.com/photos/collection_0022.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0023,Marcus Alvarez,2026-09-09,8:30,Solano Hall,SH-C01,Compost,Kitchen compost bin,0,Yes,https://example.com/photos/collection_0023.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0024,Priya Patel,2026-09-09,10:00,Santa Clara Hall,SCH-R02,Recycling,Single-stream cart,0,Yes,https://example.com/photos/collection_0024.jpg,No,,Yes,No,Yes,Crack in side panel,
+WC-0025,Priya Patel,2026-09-09,14:00,Jacinto Hall,JH-R02,Recycling,Single-stream cart,0,Yes,https://example.com/photos/collection_0025.jpg,Yes,Liquids in container,Yes,No,No,,Area around bin was clean.
+WC-0026,Marcus Alvarez,2026-09-10,11:15,AS Recreation Center,ARC-L02,Landfill,96-gal toter,25,Yes,https://example.com/photos/collection_0026.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0027,Jasmine Chen,2026-09-10,12:00,Napa Hall,NH-R01,Recycling,32-gal toter,25,Yes,https://example.com/photos/collection_0027.jpg,No,,Yes,No,No,,
+WC-0028,Priya Patel,2026-09-10,6:45,Sequoia Hall,SH-C01,Compost,32-gal toter,25,Yes,https://example.com/photos/collection_0028.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0029,David Ortiz,2026-09-10,10:00,Sequoia Hall,SH-L01,Landfill,Dumpster,50,Yes,https://example.com/photos/collection_0029.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0030,Jasmine Chen,2026-09-10,10:00,Santa Clara Hall,SCH-L01,Landfill,96-gal toter,0,Yes,https://example.com/photos/collection_0030.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0031,David Ortiz,2026-09-10,6:45,Napa Hall,NH-L02,Landfill,64-gal toter,0,Yes,https://example.com/photos/collection_0031.jpg,No,,Yes,No,No,,
+WC-0032,David Ortiz,2026-09-10,11:00,Sequoia Hall,SH-C02,Compost,32-gal toter,50,Yes,https://example.com/photos/collection_0032.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0033,Priya Patel,2026-09-10,8:30,AS Recreation Center,ARC-R02,Recycling,Single-stream cart,75,Yes,https://example.com/photos/collection_0033.jpg,No,,No,No,No,,Coordinated with building manager on placement.
+WC-0034,Priya Patel,2026-09-10,9:45,Napa Hall,NH-C02,Compost,Kitchen compost bin,25,Yes,https://example.com/photos/collection_0034.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0035,Jasmine Chen,2026-09-10,6:00,Sequoia Hall,SH-C01,Compost,32-gal toter,25,Yes,https://example.com/photos/collection_0035.jpg,No,,Yes,No,No,,
+WC-0036,Priya Patel,2026-09-10,9:15,Napa Hall,NH-R02,Recycling,64-gal toter,0,Yes,https://example.com/photos/collection_0036.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0037,Marcus Alvarez,2026-09-11,13:15,Del Norte Hall,DNH-C01,Cardboard,Cardboard cage,75,Yes,https://example.com/photos/collection_0037.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0038,Priya Patel,2026-09-11,13:30,Napa Hall,NH-C02,Cardboard,Cardboard cage,25,Yes,https://example.com/photos/collection_0038.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0039,Jasmine Chen,2026-09-11,10:30,Jacinto Hall,JH-C01,Cardboard,Baler bin,50,Yes,https://example.com/photos/collection_0039.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0040,David Ortiz,2026-09-11,14:45,Sequoia Hall,SH-L02,Landfill,Dumpster,75,Yes,https://example.com/photos/collection_0040.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0041,David Ortiz,2026-09-11,10:45,University Union,UU-C02,Cardboard,Cardboard cage,75,Yes,https://example.com/photos/collection_0041.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0042,Marcus Alvarez,2026-09-11,12:30,Sequoia Hall,SH-C02,Compost,Kitchen compost bin,75,Yes,https://example.com/photos/collection_0042.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0043,Priya Patel,2026-09-11,8:45,University Union,UU-C01,Cardboard,Cardboard cage,25,Yes,https://example.com/photos/collection_0043.jpg,Yes,Mixed trash in recycling,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0044,Priya Patel,2026-09-11,6:00,Jacinto Hall,JH-C02,Cardboard,Cardboard cage,50,No,,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0045,Jasmine Chen,2026-09-11,9:15,Sequoia Hall,SH-R01,Recycling,Single-stream cart,75,Yes,https://example.com/photos/collection_0045.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0046,Marcus Alvarez,2026-09-14,6:30,Napa Hall,NH-L01,Landfill,96-gal toter,100,Yes,https://example.com/photos/collection_0046.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0047,David Ortiz,2026-09-14,7:00,Napa Hall,NH-R01,Recycling,Single-stream cart,50,Yes,https://example.com/photos/collection_0047.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0048,David Ortiz,2026-09-14,13:15,Yosemite Hall,YH-C01,Cardboard,Baler bin,75,Yes,https://example.com/photos/collection_0048.jpg,Yes,Recyclables in landfill bin,Yes,No,No,,Coordinated with building manager on placement.
+WC-0049,David Ortiz,2026-09-14,9:00,Solano Hall,SH-C02,Cardboard,Baler bin,50,Yes,https://example.com/photos/collection_0049.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0050,Jasmine Chen,2026-09-14,13:15,Santa Clara Hall,SCH-L02,Landfill,96-gal toter,50,Yes,https://example.com/photos/collection_0050.jpg,No,,Yes,No,No,,
+WC-0051,Jasmine Chen,2026-09-14,12:45,Jacinto Hall,JH-L01,Landfill,32-gal toter,100,Yes,https://example.com/photos/collection_0051.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0052,Jasmine Chen,2026-09-14,10:30,Library,L-C01,Compost,Kitchen compost bin,75,Yes,https://example.com/photos/collection_0052.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0053,Jasmine Chen,2026-09-14,7:15,Solano Hall,SH-C02,Compost,Kitchen compost bin,50,Yes,https://example.com/photos/collection_0053.jpg,Yes,Recyclables in landfill bin,Yes,No,No,,
+WC-0054,Jasmine Chen,2026-09-14,10:15,Solano Hall,SH-C02,Compost,32-gal toter,50,No,,Yes,Food waste in recycling,Yes,No,No,,"No issues, serviced on schedule."
+WC-0055,Marcus Alvarez,2026-09-15,10:45,Jacinto Hall,JH-R02,Recycling,32-gal toter,75,Yes,https://example.com/photos/collection_0055.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0056,Marcus Alvarez,2026-09-15,6:15,Library,L-L02,Landfill,Dumpster,25,No,,No,,Yes,No,No,,Area around bin was clean.
+WC-0057,Priya Patel,2026-09-15,13:30,Library,L-C01,Cardboard,Baler bin,100,Yes,https://example.com/photos/collection_0057.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0058,Jasmine Chen,2026-09-15,8:00,Sequoia Hall,SH-C01,Compost,32-gal toter,25,No,,Yes,Mixed trash in recycling,Yes,No,No,,Requested signage refresh near bin.
+WC-0059,David Ortiz,2026-09-15,9:45,Jacinto Hall,JH-C01,Cardboard,Cardboard cage,0,Yes,https://example.com/photos/collection_0059.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0060,Kevin Nguyen,2026-09-15,10:45,University Union,UU-R02,Recycling,Single-stream cart,0,Yes,https://example.com/photos/collection_0060.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0061,Priya Patel,2026-09-15,11:30,Solano Hall,SH-C01,Cardboard,Cardboard cage,0,Yes,https://example.com/photos/collection_0061.jpg,Yes,Recyclables in landfill bin,Yes,No,Yes,Crack in side panel,Area around bin was clean.
+WC-0062,Kevin Nguyen,2026-09-15,12:45,Solano Hall,SH-C02,Cardboard,Cardboard cage,0,Yes,https://example.com/photos/collection_0062.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0063,Priya Patel,2026-09-15,14:00,Santa Clara Hall,SCH-C02,Cardboard,Baler bin,75,Yes,https://example.com/photos/collection_0063.jpg,Yes,Non-compostable item in compost,Yes,No,No,,Coordinated with building manager on placement.
+WC-0064,Jasmine Chen,2026-09-15,14:30,University Union,UU-C02,Cardboard,Cardboard cage,100,Yes,https://example.com/photos/collection_0064.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0065,Kevin Nguyen,2026-09-15,9:15,Solano Hall,SH-C01,Cardboard,Cardboard cage,50,Yes,https://example.com/photos/collection_0065.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0066,David Ortiz,2026-09-15,14:30,Solano Hall,SH-L01,Landfill,Dumpster,75,Yes,https://example.com/photos/collection_0066.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0067,David Ortiz,2026-09-16,12:30,Yosemite Hall,YH-R01,Recycling,32-gal toter,100,Yes,https://example.com/photos/collection_0067.jpg,No,,No,No,No,,
+WC-0068,Priya Patel,2026-09-16,11:30,Solano Hall,SH-R02,Recycling,Single-stream cart,100,Yes,https://example.com/photos/collection_0068.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0069,Marcus Alvarez,2026-09-16,11:45,Napa Hall,NH-C01,Cardboard,Baler bin,75,Yes,https://example.com/photos/collection_0069.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0070,Priya Patel,2026-09-16,7:45,University Union,UU-R02,Recycling,32-gal toter,0,Yes,https://example.com/photos/collection_0070.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0071,David Ortiz,2026-09-16,14:45,Jacinto Hall,JH-C02,Compost,32-gal toter,50,Yes,https://example.com/photos/collection_0071.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0072,Marcus Alvarez,2026-09-16,12:00,Library,L-R02,Recycling,32-gal toter,0,Yes,https://example.com/photos/collection_0072.jpg,No,,Yes,No,Yes,Lid hinge broken,Requested signage refresh near bin.
+WC-0073,Priya Patel,2026-09-16,8:15,Yosemite Hall,YH-R01,Recycling,Single-stream cart,25,Yes,https://example.com/photos/collection_0073.jpg,Yes,Mixed trash in recycling,Yes,No,No,,Area around bin was clean.
+WC-0074,David Ortiz,2026-09-16,6:45,Sequoia Hall,SH-C02,Cardboard,Baler bin,50,Yes,https://example.com/photos/collection_0074.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0075,David Ortiz,2026-09-16,9:45,Jacinto Hall,JH-C02,Cardboard,Baler bin,75,Yes,https://example.com/photos/collection_0075.jpg,Yes,Mixed trash in recycling,Yes,No,No,,Requested signage refresh near bin.
+WC-0076,Kevin Nguyen,2026-09-17,13:30,Yosemite Hall,YH-C01,Compost,32-gal toter,25,Yes,https://example.com/photos/collection_0076.jpg,No,,Yes,No,No,,
+WC-0077,Priya Patel,2026-09-17,6:30,AS Recreation Center,ARC-L01,Landfill,96-gal toter,25,Yes,https://example.com/photos/collection_0077.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0078,Kevin Nguyen,2026-09-17,10:15,Sequoia Hall,SH-R02,Recycling,Single-stream cart,50,Yes,https://example.com/photos/collection_0078.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0079,Jasmine Chen,2026-09-17,12:30,Library,L-C01,Cardboard,Cardboard cage,0,Yes,https://example.com/photos/collection_0079.jpg,No,,No,No,No,,
+WC-0080,Jasmine Chen,2026-09-17,13:00,Jacinto Hall,JH-C02,Cardboard,Cardboard cage,100,No,,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0081,Marcus Alvarez,2026-09-17,6:30,Jacinto Hall,JH-C01,Cardboard,Cardboard cage,75,Yes,https://example.com/photos/collection_0081.jpg,Yes,Liquids in container,Yes,No,No,,
+WC-0082,Marcus Alvarez,2026-09-17,13:45,Del Norte Hall,DNH-C01,Cardboard,Baler bin,50,Yes,https://example.com/photos/collection_0082.jpg,Yes,Non-compostable item in compost,Yes,No,No,,Requested signage refresh near bin.
+WC-0083,Priya Patel,2026-09-17,10:15,Library,L-C02,Compost,32-gal toter,0,Yes,https://example.com/photos/collection_0083.jpg,No,,Yes,No,No,,
+WC-0084,Jasmine Chen,2026-09-18,9:00,University Union,UU-L02,Landfill,64-gal toter,100,Yes,https://example.com/photos/collection_0084.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0085,Kevin Nguyen,2026-09-18,10:15,University Union,UU-C01,Compost,32-gal toter,0,Yes,https://example.com/photos/collection_0085.jpg,No,,No,No,Yes,"Wheel damaged, hard to move","No issues, serviced on schedule."
+WC-0086,Priya Patel,2026-09-18,14:00,AS Recreation Center,ARC-C01,Compost,32-gal toter,0,Yes,https://example.com/photos/collection_0086.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0087,Marcus Alvarez,2026-09-18,6:45,Sequoia Hall,SH-L02,Landfill,Dumpster,75,Yes,https://example.com/photos/collection_0087.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0088,Marcus Alvarez,2026-09-18,8:30,Library,L-L02,Landfill,64-gal toter,100,Yes,https://example.com/photos/collection_0088.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0089,Marcus Alvarez,2026-09-18,14:15,Jacinto Hall,JH-C02,Cardboard,Cardboard cage,75,Yes,https://example.com/photos/collection_0089.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0090,David Ortiz,2026-09-18,11:15,Library,L-C02,Compost,Kitchen compost bin,75,Yes,https://example.com/photos/collection_0090.jpg,Yes,Food waste in recycling,Yes,No,No,,Area around bin was clean.
+WC-0091,Priya Patel,2026-09-18,11:45,Del Norte Hall,DNH-L02,Landfill,32-gal toter,0,Yes,https://example.com/photos/collection_0091.jpg,No,,Yes,No,No,,Coordinated with building manager on placement.
+WC-0092,Priya Patel,2026-09-18,9:00,Del Norte Hall,DNH-R01,Recycling,Single-stream cart,50,Yes,https://example.com/photos/collection_0092.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0093,Jasmine Chen,2026-09-18,10:30,Del Norte Hall,DNH-L02,Landfill,32-gal toter,50,Yes,https://example.com/photos/collection_0093.jpg,No,,Yes,No,No,,
+WC-0094,Marcus Alvarez,2026-09-18,14:15,Yosemite Hall,YH-L01,Landfill,32-gal toter,75,Yes,https://example.com/photos/collection_0094.jpg,No,,Yes,No,No,,
+WC-0095,Jasmine Chen,2026-09-18,6:00,Santa Clara Hall,SCH-L01,Landfill,64-gal toter,50,Yes,https://example.com/photos/collection_0095.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0096,Marcus Alvarez,2026-09-21,10:45,Sequoia Hall,SH-L02,Landfill,Dumpster,100,Yes,https://example.com/photos/collection_0096.jpg,No,,Yes,Yes,No,,"No issues, serviced on schedule."
+WC-0097,David Ortiz,2026-09-21,10:30,Sequoia Hall,SH-C01,Compost,32-gal toter,0,Yes,https://example.com/photos/collection_0097.jpg,Yes,Mixed trash in recycling,Yes,No,No,,Coordinated with building manager on placement.
+WC-0098,Marcus Alvarez,2026-09-21,12:00,Del Norte Hall,DNH-C01,Compost,Kitchen compost bin,75,Yes,https://example.com/photos/collection_0098.jpg,No,,Yes,No,No,,
+WC-0099,Marcus Alvarez,2026-09-21,11:15,Yosemite Hall,YH-C01,Compost,Kitchen compost bin,100,Yes,https://example.com/photos/collection_0099.jpg,No,,Yes,No,No,,"High foot traffic area, monitor closely."
+WC-0100,David Ortiz,2026-09-21,11:15,Napa Hall,NH-C01,Cardboard,Baler bin,50,Yes,https://example.com/photos/collection_0100.jpg,No,,Yes,No,No,,Area around bin was clean.
+WC-0101,Marcus Alvarez,2026-09-21,8:30,Santa Clara Hall,SCH-C01,Compost,32-gal toter,25,Yes,https://example.com/photos/collection_0101.jpg,Yes,Liquids in container,Yes,No,No,,
+WC-0102,David Ortiz,2026-09-21,8:45,Solano Hall,SH-C02,Cardboard,Baler bin,0,Yes,https://example.com/photos/collection_0102.jpg,No,,Yes,No,No,,Requested signage refresh near bin.
+WC-0103,Priya Patel,2026-09-21,6:00,Del Norte Hall,DNH-L02,Landfill,Dumpster,50,Yes,https://example.com/photos/collection_0103.jpg,No,,Yes,No,No,,"No issues, serviced on schedule."
+WC-0104,Priya Patel,2026-09-21,9:30,Napa Hall,NH-C02,Cardboard,Cardboard cage,100,Yes,https://example.com/photos/collection_0104.jpg,No,,Yes,Yes,No,,Requested signage refresh near bin.
+WC-0105,Priya Patel,2026-09-21,13:15,Library,L-R01,Recycling,32-gal toter,0,Yes,https://example.com/photos/collection_0105.jpg,No,,Yes,No,No,,
