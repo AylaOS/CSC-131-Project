@@ -161,3 +161,49 @@ footer {
     margin-top: 24px;
   }
 }
+
+/* layout and spacing for the collection survey page */
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 56px 8%;
+}
+
+.form-introduction {
+  margin-bottom: 28px;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+  padding: 32px;
+  background: white;
+  border-radius: 12px;
+}
+
+label {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+form button {
+  margin-top: 20px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}

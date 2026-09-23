@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection Survey</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Driver Portal</p>
+      <h1>Collection Survey</h1>
+    </div>
+
+    <div class="role-indicator">
+      <span>Current role</span>
+      <strong>Driver</strong>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a class="active" href="survey.html">Collection Survey</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="reports.html">Reports</a>
+  </nav>
+
+  <main class="form-container">
+    <section class="form-introduction">
+      <p class="eyebrow">New Record</p>
+      <h2>Submit a Collection Record</h2>
+      <p>
+        Enter the information from the completed waste collection.
+      </p>
+    </section>
+
+    <! form where drivers submit new collection record >
+
+    <form>
+      <label for="collection-date">Collection date</label>
+      <input type="date" id="collection-date" name="collection-date" required>
+
+      <label for="location">Collection location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        placeholder="Example: Mendocino Hall"
+        required
+      >
+
+      <label for="waste-type">Waste type</label>
+      <select id="waste-type" name="waste-type" required>
+        <option value="">Select a waste type</option>
+        <option value="recyclable">Recyclable</option>
+        <option value="compost">Compost</option>
+        <option value="landfill">Landfill</option>
+        <option value="mixed">Mixed waste</option>
+      </select>
+
+      <label for="weight">Estimated weight in pounds</label>
+      <input
+        type="number"
+        id="weight"
+        name="weight"
+        min="0"
+        step="0.1"
+        placeholder="Example: 25"
+        required
+      >
+
+      <label for="condition">Bin condition</label>
+      <select id="condition" name="condition" required>
+        <option value="">Select a condition</option>
+        <option value="good">Good</option>
+        <option value="overflowing">Overflowing</option>
+        <option value="damaged">Damaged</option>
+      </select>
+
+      <label for="notes">Additional notes</label>
+      <textarea
+        id="notes"
+        name="notes"
+        rows="4"
+        placeholder="Describe any collection issues..."
+      ></textarea>
+
+      <button type="submit" class="primary-button">
+        Submit Collection Record
+      </button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Signed in as Driver</p>
+  </footer>
+</body>
+</html>
