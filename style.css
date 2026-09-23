@@ -1,0 +1,163 @@
+:root {
+  --navy: #202638;
+  --blue: #5e68e8;
+  --light: #f5f7fb;
+  --text: #202638;
+  --border: #dfe3ed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--text);
+  background: var(--light);
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 8%;
+  color: white;
+  background: var(--navy);
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 650px;
+  margin-bottom: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.role-indicator {
+  align-self: center;
+  min-width: 130px;
+  padding: 14px;
+  border: 1px solid white;
+  border-radius: 8px;
+}
+
+.role-indicator span,
+.role-indicator strong {
+  display: block;
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 16px 8%;
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+
+.main-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-nav a.active,
+.main-nav a:hover {
+  color: var(--blue);
+}
+
+.home-content {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 8%;
+}
+
+.welcome-section {
+  padding: 32px;
+  border-radius: 12px;
+  background: white;
+}
+
+.welcome-section h2 {
+  font-size: 2rem;
+}
+
+.primary-button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 14px 20px;
+  color: white;
+  background: var(--blue);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.quick-links {
+  display: grid;
+  gap: 12px;
+}
+
+.quick-link {
+  display: block;
+  padding: 18px;
+  color: var(--text);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.quick-link:hover {
+  border-color: var(--blue);
+}
+
+.quick-link span,
+.quick-link small {
+  display: block;
+}
+
+.quick-link span {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.quick-link small {
+  color: #596174;
+}
+
+footer {
+  padding: 24px 8%;
+  color: white;
+  background: var(--navy);
+}
+
+@media (max-width: 700px) {
+  .site-header,
+  .home-content {
+    display: block;
+  }
+
+  .role-indicator {
+    margin-top: 24px;
+  }
+
+  .quick-links {
+    margin-top: 24px;
+  }
+}
