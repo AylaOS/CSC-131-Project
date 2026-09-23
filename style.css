@@ -1,0 +1,154 @@
+:root {
+  --navy: #202638;
+  --blue: #5e68e8;
+  --light: #f5f7fb;
+  --text: #202638;
+  --muted: #596174;
+  --border: #dfe3ed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--light);
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 8%;
+  color: white;
+  background: var(--navy);
+}
+
+h1 {
+  max-width: 650px;
+  margin-bottom: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.role-indicator {
+  align-self: center;
+  min-width: 130px;
+  padding: 14px;
+  border: 1px solid white;
+  border-radius: 8px;
+}
+
+.role-indicator span,
+.role-indicator strong {
+  display: block;
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 16px 8%;
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+
+.main-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-nav a.active,
+.main-nav a:hover {
+  color: var(--blue);
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 56px 8%;
+}
+
+.form-introduction {
+  margin-bottom: 28px;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+  padding: 32px;
+  background: white;
+  border-radius: 12px;
+}
+
+label {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  background: white;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.help-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.primary-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  background: var(--blue);
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+}
+
+footer {
+  padding: 24px 8%;
+  color: white;
+  background: var(--navy);
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    display: block;
+  }
+
+  .role-indicator {
+    margin-top: 24px;
+  }
+}

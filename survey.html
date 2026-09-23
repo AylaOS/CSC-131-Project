@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection Survey</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Driver Portal</p>
+      <h1>Collection Survey</h1>
+    </div>
+
+    <div class="role-indicator">
+      <span>Current role</span>
+      <strong>Driver</strong>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a class="active" href="survey.html">Collection Survey</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="reports.html">Reports</a>
+  </nav>
+
+  <main class="form-container">
+    <section class="form-introduction">
+      <p class="eyebrow">New Record</p>
+      <h2>Submit a Collection Record</h2>
+      <p>Enter the information from the completed waste collection.</p>
+    </section>
+
+    <form id="collection-form">
+      <label for="driver-name">Driver or employee name</label>
+      <input type="text" id="driver-name" name="driver-name" required>
+
+      <label for="account-number">Account number</label>
+    <select id="account-number" name="account-number" required>
+    <option value="">Select an account</option>
+    </select>
+
+    <label for="location">Building and collection location</label>
+    <input type="text" id="location" name="location" readonly required>
+
+    <label for="inventory-summary">Inventory information</label>
+    <input
+    type="text"
+    id="inventory-summary"
+    name="inventory-summary"
+    readonly
+>
+
+      <label for="bin-id">Unique bin ID</label>
+      <input type="text" id="bin-id" name="bin-id" required>
+
+      <label for="waste-type">Waste stream</label>
+      <select id="waste-type" name="waste-type" required>
+        <option value="">Select a waste stream</option>
+        <option value="recyclable">Recyclable</option>
+        <option value="compost">Compost</option>
+        <option value="landfill">Landfill</option>
+        <option value="mixed">Mixed waste</option>
+      </select>
+
+      <label for="container-type">Container type</label>
+      <select id="container-type" name="container-type" required>
+        <option value="">Select a container type</option>
+        <option value="dumpster">Dumpster</option>
+        <option value="cart">Cart</option>
+        <option value="compactor">Compactor</option>
+        <option value="other">Other</option>
+      </select>
+
+<label for="container-size">Container size</label>
+<select id="container-size" name="container-size" required>
+  <option value="">Select a container size</option>
+  <option value="1YD">1YD</option>
+  <option value="2YD">2YD</option>
+  <option value="3YD">3YD</option>
+  <option value="4YD">4YD</option>
+  <option value="5YD">5YD</option>
+  <option value="6YD">6YD</option>
+  <option value="15YD">15YD</option>
+  <option value="20YD">20YD</option>
+  <option value="30YD">30YD</option>
+  <option value="40YD">40YD</option>
+  <option value="64GAL">64GAL</option>
+  <option value="90GAL">90GAL</option>
+  <option value="96GAL">96GAL</option>
+</select>
+
+      <label for="container-size">Container size</label>
+      <input type="text" id="container-size" name="container-size" required>
+
+      <label for="fullness">Fullness level before collection</label>
+      <select id="fullness" name="fullness" required>
+        <option value="">Select a fullness level</option>
+        <option value="0">0%</option>
+        <option value="25">25%</option>
+        <option value="50">50%</option>
+        <option value="75">75%</option>
+        <option value="100">100%</option>
+        <option value="overflowing">Overflowing</option>
+      </select>
+
+
+      <label for="contamination">Contamination present?</label>
+      <select id="contamination" name="contamination" required>
+        <option value="">Select an option</option>
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+      </select>
+
+      <label for="contaminant-type">Contaminant type</label>
+      <input type="text" id="contaminant-type" name="contaminant-type">
+
+      <label for="condition">Bin condition</label>
+      <select id="condition" name="condition" required>
+        <option value="">Select a condition</option>
+        <option value="good">Good</option>
+        <option value="damaged">Damaged</option>
+      </select>
+
+      <label for="damage-type">Damaged-bin issue</label>
+      <input type="text" id="damage-type" name="damage-type">
+
+      <label for="overflow">Material outside the bin?</label>
+      <select id="overflow" name="overflow" required>
+        <option value="">Select an option</option>
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+      </select>
+
+      <label for="photo">Photo</label>
+      <input type="file" id="photo" name="photo" accept="image/*" required>
+      <label for="notes">Additional comments</label>
+      <textarea id="notes" name="notes" rows="4"></textarea>
+
+      <button type="submit" class="primary-button">
+        Submit Collection Record
+      </button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Signed in as Driver</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

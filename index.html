@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waste Collection Survey and Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <! Shows the project title and the driver's current role>
+    
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Waste Management System</p>
+      <h1>Waste Collection Survey and Dashboard</h1>
+    </div>
+
+    <div class="role-indicator">
+      <span>Current role</span>
+      <strong>Driver</strong>
+    </div>
+  </header>
+
+  <! Main navigation shared by homepage and survey page >
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a class="active" href="index.html">Home</a>
+    <a href="survey.html">Collection Survey</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="reports.html">Reports</a>
+  </nav>
+
+  <main class="home-content">
+    <section class="welcome-section">
+      <p class="eyebrow">Driver Portal</p>
+      <h2>Welcome to the collection portal</h2>
+      <p>
+        Submit a collection record quickly and help keep waste collection
+        information organized.
+      </p>
+
+      <a class="primary-button" href="survey.html">
+        Submit Collection Record
+      </a>
+    </section>
+
+    <section class="quick-links" aria-labelledby="quick-links-title">
+      <h2 id="quick-links-title">Quick Access</h2>
+
+      <a class="quick-link" href="survey.html">
+        <span>Collection Survey</span>
+        <small>Record a completed collection</small>
+      </a>
+
+      <a class="quick-link" href="dashboard.html">
+        <span>Dashboard</span>
+        <small>View authorized summaries</small>
+      </a>
+
+      <a class="quick-link" href="reports.html">
+        <span>Reports and Exports</span>
+        <small>Available to authorized users</small>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Signed in as Driver</p>
+  </footer>
+</body>
+</html>
