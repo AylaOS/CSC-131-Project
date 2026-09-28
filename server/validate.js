@@ -25,7 +25,7 @@ function buildCollectionRow(input, bin) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(r.date || "")) throw new ValidationError("Date must be YYYY-MM-DD.");
   if (!/^\d{1,2}:\d{2}$/.test(r.time || "")) throw new ValidationError("Time must be HH:MM.");
 
-  // Offline records can arrive later, but not from the future or months ago.
+  //check date is valid (not from the past/future)
   const ageDays = (Date.now() - new Date(`${r.date}T12:00:00`).getTime()) / 86400000;
   if (ageDays < -1.5 || ageDays > 30) throw new ValidationError("Date is outside the allowed range.");
 
