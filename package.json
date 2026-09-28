@@ -1,0 +1,21 @@
+{
+  "name": "csc-131-waste-collection",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Waste Collection Survey and Dashboard for Sacramento State (CSC 131)",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "seed": "node scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "dotenv": "^18.0.4",
+    "express": "^4.22.3",
+    "helmet": "^8.3.0"
+  }
+}
