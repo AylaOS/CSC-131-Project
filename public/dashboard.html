@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#043927">
+  <title>Dashboard · Waste Collection</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="dashboard">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Office of Sustainability</p>
+      <h1>Collection Dashboard</h1>
+    </div>
+
+    <div class="role-indicator">
+      <label for="role-select">Current role (demo)</label>
+      <select id="role-select"></select>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a data-page-link="index" href="index.html">Home</a>
+    <a data-page-link="survey" href="survey.html">Collection Survey</a>
+    <a data-page-link="dashboard" class="active" href="dashboard.html">Dashboard</a>
+    <a data-page-link="reports" href="reports.html">Reports</a>
+    <span id="connection-status" class="connection-status"></span>
+  </nav>
+
+  <main class="page-container">
+    <section class="filter-bar" id="filters" aria-label="Filters"></section>
+
+    <div id="alerts"></div>
+
+    <section class="kpi-grid" id="kpis" aria-label="Summary indicators"></section>
+
+    <section class="chart-grid">
+      <article class="panel">
+        <h2>Pickups per day</h2>
+        <div id="chart-date"></div>
+      </article>
+      <article class="panel">
+        <h2>Average fullness per day</h2>
+        <div id="chart-date-fullness"></div>
+      </article>
+      <article class="panel">
+        <h2>Pickups by location</h2>
+        <div id="chart-location"></div>
+      </article>
+      <article class="panel">
+        <h2>Pickups by waste stream</h2>
+        <div id="chart-stream"></div>
+      </article>
+      <article class="panel">
+        <h2>Fullness at time of collection</h2>
+        <div id="chart-fullness"></div>
+      </article>
+      <article class="panel">
+        <h2>Contamination rate by waste stream</h2>
+        <div id="chart-contamination-rate"></div>
+      </article>
+      <article class="panel">
+        <h2>Common contamination types</h2>
+        <div id="chart-contamination-types"></div>
+      </article>
+      <article class="panel">
+        <h2>Service issues by location</h2>
+        <p class="panel-sub">Missed, delayed or incomplete services</p>
+        <div id="chart-service"></div>
+      </article>
+    </section>
+
+    <section class="table-grid">
+      <article class="panel">
+        <h2>Bins collected under half full</h2>
+        <p class="panel-sub">At least <span data-rule="minPickups"></span> pickups, and half or more of them below 50% full</p>
+        <div id="table-underutilized" class="table-wrap"></div>
+      </article>
+      <article class="panel">
+        <h2>Overflowing or frequently full bins</h2>
+        <p class="panel-sub">Full (100%) or material outside the bin <span data-rule="fullCount"></span>+ times</p>
+        <div id="table-full" class="table-wrap"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Missed, delayed and incomplete services</h2>
+      <div id="table-service" class="table-wrap"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Collection photos</h2>
+      <p class="panel-sub">Select a photo to see its collection record</p>
+      <div id="photo-gallery" class="photo-gallery"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Collection records</h2>
+        <a class="secondary-button" href="reports.html">Export reports</a>
+      </div>
+      <div id="table-records" class="table-wrap"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Signed in as <span data-role-label>Driver</span></p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="analytics.js"></script>
+  <script src="charts.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
