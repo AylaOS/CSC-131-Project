@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#043927">
+  <title>Collection Survey</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="survey">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Driver Portal</p>
+      <h1>Collection Survey</h1>
+    </div>
+
+    <div class="role-indicator">
+      <label for="role-select">Current role (demo)</label>
+      <select id="role-select"></select>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a data-page-link="index" href="index.html">Home</a>
+    <a data-page-link="survey" class="active" href="survey.html">Collection Survey</a>
+    <a data-page-link="dashboard" href="dashboard.html">Dashboard</a>
+    <a data-page-link="reports" href="reports.html">Reports</a>
+    <span id="connection-status" class="connection-status"></span>
+  </nav>
+
+  <main class="form-container">
+    <section class="form-introduction">
+      <p class="eyebrow">New Record</p>
+      <h2>Submit a Collection Record</h2>
+      <p>Scan the bin's QR code or pick the location and bin. Most fields fill in automatically.</p>
+    </section>
+
+    <!-- Shown after a successful submission -->
+    <section id="success-panel" class="panel success-panel" hidden tabindex="-1" aria-live="polite">
+      <p class="success-icon" aria-hidden="true">✓</p>
+      <h2>Collection record submitted</h2>
+      <p id="success-detail"></p>
+      <button type="button" class="primary-button" id="new-record">Submit another record</button>
+    </section>
+
+    <div id="qr-banner" class="notice" hidden></div>
+
+    <form id="collection-form" novalidate>
+      <fieldset>
+        <legend>Pickup details</legend>
+
+        <label for="driver-name">Driver or employee name</label>
+        <input type="text" id="driver-name" name="driver" list="driver-list" autocomplete="name" required>
+        <datalist id="driver-list"></datalist>
+        <p class="help-text">Remembered on this device after your first submission.</p>
+
+        <div class="two-col">
+          <div>
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+          <div>
+            <label for="time">Time</label>
+            <input type="time" id="time" name="time" required>
+          </div>
+        </div>
+        <p class="help-text">Filled in automatically. Change only if entering a pickup later.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Bin</legend>
+
+        <label for="location">Building or collection location</label>
+        <select id="location" name="location" required></select>
+
+        <label for="bin-id">Unique bin ID</label>
+        <select id="bin-id" name="binId" required disabled>
+          <option value="">Select a location first</option>
+        </select>
+
+        <div id="inventory-summary" class="inventory-summary" hidden></div>
+
+        <span class="field-label" id="stream-label">Waste stream</span>
+        <div class="choice-group" role="radiogroup" aria-labelledby="stream-label" id="stream-group"></div>
+
+        <label for="container">Container type or size</label>
+        <select id="container" name="container" required></select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Collection</legend>
+
+        <span class="field-label" id="fullness-label">Fullness level before collection</span>
+        <div class="choice-group fullness" role="radiogroup" aria-labelledby="fullness-label" id="fullness-group"></div>
+
+        <span class="field-label" id="service-label">Service completed?</span>
+        <div class="choice-group" role="radiogroup" aria-labelledby="service-label" id="service-group"></div>
+
+        <div id="service-reason-wrap" hidden>
+          <label for="service-reason">Reason</label>
+          <select id="service-reason" name="serviceReason"></select>
+        </div>
+
+        <span class="field-label" id="overflow-label">Overflow or material outside the bin?</span>
+        <div class="choice-group yes-no" role="radiogroup" aria-labelledby="overflow-label" data-name="overflow"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Issues</legend>
+
+        <span class="field-label" id="contamination-label">Contamination observed?</span>
+        <div class="choice-group yes-no" role="radiogroup" aria-labelledby="contamination-label" data-name="contamination"></div>
+
+        <div id="contamination-types-wrap" hidden>
+          <span class="field-label">Contamination type (check all that apply)</span>
+          <div class="check-group" id="contamination-types"></div>
+        </div>
+
+        <span class="field-label" id="damaged-label">Damaged bin or maintenance issue?</span>
+        <div class="choice-group yes-no" role="radiogroup" aria-labelledby="damaged-label" data-name="damaged"></div>
+
+        <div id="damage-wrap" hidden>
+          <label for="damage-type">Issue</label>
+          <select id="damage-type" name="damageType"></select>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Photos and comments</legend>
+
+        <label for="photo">Photographs of the container or contents</label>
+        <input type="file" id="photo" name="photo" accept="image/*" capture="environment" multiple required>
+        <p class="help-text">Opens the camera on phones. Up to 3 photos.</p>
+        <div id="photo-previews" class="photo-previews"></div>
+
+        <label for="notes">Additional comments (optional)</label>
+        <textarea id="notes" name="comments" rows="3"></textarea>
+      </fieldset>
+
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+
+      <button type="submit" class="primary-button submit-button">Submit Collection Record</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Signed in as <span data-role-label>Driver</span></p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="survey.js"></script>
+</body>
+</html>
