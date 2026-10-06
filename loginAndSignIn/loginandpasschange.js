@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded",() => {
             //we should this check, but we need to hide this so random people cannot anlyze the code or trace the variable
             if(user === "admin" && pass === "1234"){
                 //change this to the correct html file if this is the wrong file
-                window.location.href = "index.html";
+                window.location.href = "../public/index.html"; //I updated file path
             }
             else{
                 alert("Incorrect username or password");
