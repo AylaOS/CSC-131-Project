@@ -1,5 +1,4 @@
 /*
-Author: Alex Benny
 Team: "Hello World"
 Description: This file compares the username and password with the data and redirects the user to main page for login page. 
     This file also helps the user reset their password.
