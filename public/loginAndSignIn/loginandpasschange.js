@@ -4,7 +4,7 @@ Description: This file compares the username and password with the data and redi
     This file also helps the user reset their password.
 */
 
-import { supabase } from './supabaseClient.js'
+import { supabase } from './supabaseClient.js';
 
 document.addEventListener("DOMContentLoaded",() => {
     //This is part until the next comment is used for sigining into the website (login.html)
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded",() => {
                 return;
             }
             console.log("Authenticated user: ", data.user);
-            window.location.href = "../public/index.html"
+            window.location.href = "../index.html";
         });
 
         //this code checks if the user presses forgot password and redircts them to forgotpasspage.html
@@ -69,17 +69,73 @@ document.addEventListener("DOMContentLoaded",() => {
     
     const resetPassword = document.getElementById("resetPassword");
     if(resetPassword){
+        const newPassword = document.getElementById("newPassword");
+        const confirmPassword = document.getElementById("confirmPassword");
+            
+
+        const lengthReq = document.getElementById("length");
+        const uppercaseReq = document.getElementById("uppercase");
+        const lowercaseReq = document.getElementById("lowercase");
+        const numberReq = document.getElementById("number"); 
+        const specialReq = document.getElementById("special");
+        const matchReq = document.getElementById("password_match");
+        
+        function checkPasswordRequirements(){
+            const lengthValid = newPassword.value.length >= 12;
+            const uppercaseValid = /[A-Z]/.test(newPassword.value);
+            const lowercaseValid = /[a-z]/.test(newPassword.value);
+            const numberValid = /[0-9]/.test(newPassword.value);
+            const specialCharValid = /[^A-Za-z0-9]/.test(newPassword.value);
+            const matchValid = confirmPassword.value.length > 0 && newPassword.value === confirmPassword.value;
+            
+            lengthReq.classList.toggle("valid",lengthValid);
+            uppercaseReq.classList.toggle("valid", uppercaseValid);
+            lowercaseReq.classList.toggle("valid",lowercaseValid);
+            numberReq.classList.toggle("valid", numberValid);
+            specialReq.classList.toggle("valid", specialCharValid);
+            matchReq.classList.toggle("valid", matchValid);
+
+            return (lengthValid && uppercaseValid && lowercaseValid && numberValid && specialCharValid && matchReq);
+        }
+
+        newPassword.addEventListener("input", checkPasswordRequirements);
+        confirmPassword.addEventListener("input", checkPasswordRequirements);
+
+        //write the part that sends the password into the database
         resetPassword.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const newPassword = document.getElementById("newPassword").value;
-            const conffirmPassword = document.getElementById("confirmPassword");
-            
-            //do the password requirements.
+            if(!checkPasswordRequirements()){
+                alert("Please meet all password requirements.");
+                return;
+            }
+
+            const { error } = await supabase.auth.updateUser({
+                password: newPassword.value
+            });
+
+            if (error) {
+                console.error("Password update failed:", error.message);
+
+                alert(
+                    "Unable to update your password. Please try again."
+                );
+
+                return;
+            }
+
+            alert("Your password has been updated successfully!");
+
+            window.location.href="login.html";
+
+
         })
     }
 
+
 });
+        
+
 
 /*
             const user = document.getElementById("username").value;
