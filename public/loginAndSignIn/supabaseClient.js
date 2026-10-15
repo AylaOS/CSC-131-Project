@@ -1,3 +1,7 @@
+//team: Hello World
+//this file allows the frontend JavaScript communicate directly with the Supabase
+//database and authetnication services
+
 import { createClient} from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabaseUrl = "https://xwzjokwjhadsliuoufpu.supabase.co"

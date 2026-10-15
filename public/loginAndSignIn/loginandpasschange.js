@@ -1,7 +1,7 @@
 /*
 Team: "Hello World"
 Description: This file compares the username and password with the data and redirects the user to main page for login page. 
-    This file also helps the user reset their password.
+    This file also helps the user reset their password by sending an email from supabase and sends them to reset password page.
 */
 
 import { supabase } from './supabaseClient.js';
@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded",() => {
         });
     }
     
+    //this part is linked to resetpassword.html
     const resetPassword = document.getElementById("resetPassword");
     if(resetPassword){
         const newPassword = document.getElementById("newPassword");
@@ -117,10 +118,7 @@ document.addEventListener("DOMContentLoaded",() => {
             if (error) {
                 console.error("Password update failed:", error.message);
 
-                alert(
-                    "Unable to update your password. Please try again."
-                );
-
+                alert("Unable to update your password. Please try again.");
                 return;
             }
 
@@ -135,23 +133,5 @@ document.addEventListener("DOMContentLoaded",() => {
 
 });
         
-
-
-/*
-            const user = document.getElementById("username").value;
-            const pass = document.getElementById("password").value;
-            */
-            
-            //checks the new password's length
-            /*
-            if(pass.length < 8){
-                alert("Your password must be between 8 to 16 characters");
-                return;
-            }
-            */
-            
-            //encrypt and store the new password onto the server
-
-        //    window.location.href = "login.html";
 
 
