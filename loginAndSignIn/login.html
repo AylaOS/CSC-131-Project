@@ -10,7 +10,7 @@ This file displays the login page
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <script src="loginandpasschange.js" defer></script>
+    <script type="module" src="loginandpasschange.js" defer></script>
     <title>Login</title>
     
 </head>
@@ -22,8 +22,8 @@ This file displays the login page
                 <h1>Login</h1>
 
                 <form id="loginForm">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
 
                     <label for="password">Password</label>
                     <input type="password" id="password" required>

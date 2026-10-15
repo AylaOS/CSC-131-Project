@@ -7,7 +7,7 @@ Description: This files displays the forgot password page
 <head>
     <meta charset="UTF-8">
     <title>Create Account</title>
-    <script src="loginandpasschange.js" defer></script>
+    <script type="module" src="loginandpasschange.js"></script>
     <link rel="stylesheet" href="forgotpasspage.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -19,17 +19,20 @@ Description: This files displays the forgot password page
 
         <form id="forgotPassForm">
             <label>Email</label>
-            <input type="email" id="email" required>
+            <input type="email" id="retEmail" required>
 
+            <button type="submit">Send Reset Link</button>
+        </form>  
+        <p id = "resetMessage" role="status"></p>
+    </div>
+</body>
+</html>
+
+<!--
             <label>Username</label>
             <input type="text" id="username" required>
 
             <label>Password</label>
             <input type="password" id="password" required>
 
-            <button type="submit">Change Password</button>
-        </form>  
-    </div>
-</body>
-</html>
-
+-->

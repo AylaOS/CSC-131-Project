@@ -4,28 +4,32 @@ Description: This file compares the username and password with the data and redi
     This file also helps the user reset their password.
 */
 
+import { supabase } from './supabaseClient.js'
 
 document.addEventListener("DOMContentLoaded",() => {
     //This is part until the next comment is used for sigining into the website (login.html)
     const loginForm = document.getElementById("loginForm");
     if(loginForm){
-        loginForm.addEventListener("submit", (event) => {
+        loginForm.addEventListener("submit", async (event) => {
             event.preventDefault();
             
             //For the text boxes for username and password
-            const user = document.getElementById("username").value;
-            const pass = document.getElementById("password").value;
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
 
-            //this should be changed so it compared the username and matching passwords that are stored on the database
-            //we should this check, but we need to hide this so random people cannot anlyze the code or trace the variable
-            if(user === "admin" && pass === "1234"){
-                //change this to the correct html file if this is the wrong file
-                window.location.href = "../public/index.html"; //I updated file path
-            }
-            else{
+            //authenticates the username an password with the information on the server
+            const {data, error} = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if(error){
                 alert("Incorrect username or password");
+                console.error("Login error:", error.message);
+                return;
             }
-    
+            console.log("Authenticated user: ", data.user);
+            window.location.href = "../public/index.html"
         });
 
         //this code checks if the user presses forgot password and redircts them to forgotpasspage.html
@@ -37,32 +41,61 @@ document.addEventListener("DOMContentLoaded",() => {
         }
     }
 
-    //This bottom half is linked the the html file that changes passwords for the user (forgotpasspage.html) 
-
+    //This part is linked the the html file that changes passwords for the user (forgotpasspage.html) 
     const forgotPassForm = document.getElementById("forgotPassForm");
     if (forgotPassForm){
-        forgotPassForm.addEventListener("submit", (event) => {
+        forgotPassForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
             //we will ask the users for thier email and username to verify the password change
-            //this might change in the future
-            const email = document.getElementById("email").value;
+            const email = document.getElementById("retEmail").value;
+            const resetMessage = document.getElementById("resetMessage");
+            
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {redirectTo: new URL(
+                "resetpassword.html", 
+                window.location.href).href
+            });
+
+            if (error) {
+                console.error("Password request failed:", error.message);
+                resetMessage.textContent = 
+                    "Unable to process the request. Please try again.";
+                return;
+            }
+
+            resetMessage.textContent = "If an accound exits for this email, you may recieve a password-reset link.";        
+        });
+    }
+    
+    const resetPassword = document.getElementById("resetPassword");
+    if(resetPassword){
+        resetPassword.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const newPassword = document.getElementById("newPassword").value;
+            const conffirmPassword = document.getElementById("confirmPassword");
+            
+            //do the password requirements.
+        })
+    }
+
+});
+
+/*
             const user = document.getElementById("username").value;
             const pass = document.getElementById("password").value;
-
+            */
+            
             //checks the new password's length
-            if(pass.length < 8 || pass.length > 16){
+            /*
+            if(pass.length < 8){
                 alert("Your password must be between 8 to 16 characters");
                 return;
             }
+            */
             
             //encrypt and store the new password onto the server
 
-            window.location.href = "login.html";
-        });
-    } 
-});
-
-
+        //    window.location.href = "login.html";
 
 
