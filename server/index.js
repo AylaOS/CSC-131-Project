@@ -8,7 +8,7 @@ const express = require("express");
 const helmet = require("helmet");
 
 const store = require("./store");
-const { buildCollectionRow, ValidationError } = require("./validate");
+const { buildCollectionRow, ValidationError, OPTIONS } = require("./validate");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +25,10 @@ app.use(helmet({
   }
 }));
 app.use(express.json({ limit: "8mb" })); //room for 3 photos
+
+/* FORM OPTIONS (same lists validate.js checks against) */
+
+app.get("/api/options", (req, res) => res.json(OPTIONS));
 
 /* BINS */
 
