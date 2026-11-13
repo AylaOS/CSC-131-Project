@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded",() => {
         });
     }
     
-    //this part is linked to resetpassword.html
+    //this part for reseting the password (resetpassword.html)
     const resetPassword = document.getElementById("resetPassword");
     if(resetPassword){
         const newPassword = document.getElementById("newPassword");

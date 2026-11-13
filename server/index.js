@@ -74,7 +74,8 @@ app.get("/api/collections", wrap(async (req, res) => {
 app.use("/api", (req, res) => res.status(404).json({ error: "Not found." }));
 
 /* WEBSITE  */
-
+//Updated the host redirection page to CSC-131-Project/public/loginAndSignIn
+app.get("/", (req, res) => res.redirect("loginAndSignIn/login.html"));
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 /* ERROR HANDLING */
