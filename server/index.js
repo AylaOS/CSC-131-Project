@@ -19,6 +19,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       "img-src": ["'self'", "data:", "blob:", "https://*.supabase.co"],
+      "script-src":["'self'", "https://esm.sh"],
+      "connect-src": ["'self'", "https://*.supabase.co"],
       //so the site still works over http://localhost.
       "upgrade-insecure-requests": process.env.NODE_ENV === "production" ? [] : null
     }
