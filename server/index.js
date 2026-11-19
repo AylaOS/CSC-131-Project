@@ -18,14 +18,15 @@ const MAX_PHOTO_BYTES = 2 * 1024 * 1024; //after the browser's compression, phot
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
+      "script-src": ["'self'", "https://esm.sh", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+      "connect-src": ["'self'", "https://*.supabase.co", "wss://*.supabase.co", "https://esm.sh"],
       "img-src": ["'self'", "data:", "blob:", "https://*.supabase.co"],
-      "script-src":["'self'", "https://esm.sh"],
-      "connect-src": ["'self'", "https://*.supabase.co"],
-      //so the site still works over http://localhost.
+      //so site still works over http://localhost.
       "upgrade-insecure-requests": process.env.NODE_ENV === "production" ? [] : null
     }
   }
 }));
+
 app.use(express.json({ limit: "8mb" })); //room for 3 photos
 
 /* FORM OPTIONS (same lists validate.js checks against) */

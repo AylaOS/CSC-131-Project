@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sacramento State waste collection map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<style>
+:root{--green:#043927;--green2:#0b5d3b;--gold:#c4b581;--gold-d:#a8902f;--ink:#14231b;--mute:#5f6e66;--line:#e4e7df;--row:#f7f8f3}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+main>header{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#06402b;color:#fff;padding:18px 22px;border-radius:8px;border-bottom:4px solid #c9a227;font-size:15px}
+header h1{font-size:26px;font-weight:600;margin:0;letter-spacing:-.01em;color:#fff}
+header .sub{color:#c9d8cf;font-size:13px}
+.header-actions{display:flex;gap:8px}
+.header-actions button{font:inherit;font-size:15px;border-radius:6px;padding:6px 10px;cursor:pointer}
+#refresh{background:#c9a227;color:#14231b;border:1px solid #c9a227;font-weight:600}
+#refresh:hover{filter:brightness(1.08)}
+.home-link{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);border-radius:6px;padding:6px 10px}
+.home-link:hover{border-color:#c9a227}
+main{max-width:1180px;margin:0 auto;padding:24px 20px 48px;display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+.card{border:1px solid var(--line);border-top:4px solid var(--green2);border-radius:8px;padding:16px}
+.card h2{font-size:16px;margin:0 0 10px;color:var(--green)}
+.loc{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:6px;padding:9px 12px;margin-bottom:8px;cursor:pointer}
+.loc:hover,.loc.on{background:var(--row);border-left-color:var(--green2)}
+.loc b{display:block;color:var(--green);font-weight:600}
+.loc span{font-size:14px;color:var(--mute)}
+.loc.none b{color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{background:var(--green);color:#fff;font:500 14px inherit;font-family:inherit;padding:8px 13px;border-radius:6px;border:0;border-bottom:3px solid var(--gold);cursor:pointer}
+.btn:hover{background:var(--green2)}.btn.alt{background:#fff;color:var(--green);border:1px solid var(--line);border-bottom:3px solid var(--gold)}
+:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+#map{height:620px;border:1px solid var(--line);border-bottom:4px solid var(--gold);border-radius:8px;background:#f4f5f0}
+#err{display:none;padding:14px 16px;border:1px solid #c0392b;border-radius:8px;margin-bottom:16px}
+.hint{font-size:13px;color:var(--mute);margin-top:10px}
+@media (max-width:860px){main{grid-template-columns:1fr}#map{height:420px}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>Campus waste collection</h1><div class="sub">Sacramento State · last pickup at each location</div></div>
+    <div class="header-actions">
+      <a class="home-link" href="index.html">← Home</a>
+      <button id="refresh">Refresh now</button>
+    </div>
+  </header>
+  <aside class="card" aria-live="polite">
+    <h2>Locations</h2>
+    <div id="list">Loading…</div>
+    <div class="btns">
+      <button class="btn alt" id="edit">Adjust pins</button>
+      <button class="btn alt" id="copy" hidden>Copy positions</button>
+    </div>
+    <div class="hint" id="hint"></div>
+  </aside>
+  <section>
+    <div id="err" role="alert"></div>
+    <div id="map" role="application" aria-label="Map of campus locations with last waste collection times"></div>
+  </section>
+</main>
+
+<script>
+// ====== CONFIG ======
+const GOOGLE_KEY   = "AIzaSyAgapzOcxmx6j38kFUKxTxy0p17s6i8DBE";
+const SUPABASE_URL = "https://xwzjokwjhadsliuoufpu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_1cdPK9k5b5eTuXDQ27Qg5g_3sit3svN";
+const REFRESH_SECONDS = 30;
+// match: text used to find the location in your tables. binIds: optional bin_id values to use instead of auto-matching.
+// Coordinates are approximate (only Draper Hall is from a published source). Use "Adjust pins" to fix them.
+const LOCATIONS = [
+  { name: "Draper Hall",           match: /draper/i,    lat: 38.56768, lng: -121.42551, binIds: [] },
+  { name: "Klamath Hall",          match: /klamath/i,   lat: 38.5668,  lng: -121.4262,  binIds: [] },
+  { name: "Brighton Hall",         match: /brighton/i,  lat: 38.5626,  lng: -121.4242,  binIds: [] },
+  { name: "Lassen Hall",           match: /lassen/i,    lat: 38.5594,  lng: -121.4236,  binIds: [] },
+  { name: "Kadema Hall",           match: /kadema/i,    lat: 38.5600,  lng: -121.4220,  binIds: [] },
+  { name: "Mariposa Hall",         match: /mariposa/i,  lat: 38.5588,  lng: -121.4222,  binIds: [] },
+  { name: "Sac State Arboretum",   match: /arboretum/i, lat: 38.5612,  lng: -121.4250,  binIds: [] }
+];
+// ====================
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let map, info, editing = false, selected = null, results = [];
+const markers = [];
+
+try { const p = JSON.parse(localStorage.getItem("pinPositions") || "{}"); LOCATIONS.forEach(l => { if (p[l.name]) { l.lat = p[l.name].lat; l.lng = p[l.name].lng; } }); } catch {}
+
+async function fetchAll(table) {
+  const out = [], size = 1000;
+  for (let from = 0; from < 20000; from += size) {
+    const { data, error } = await db.from(table).select("*").range(from, from + size - 1);
+    if (error) throw error;
+    out.push(...data);
+    if (data.length < size) break;
+  }
+  return out;
+}
+const hasMatch = (r, re) => Object.values(r).some(v => typeof v === "string" && re.test(v));
+const stamp = r => String(r.collected_date) + " " + String(r.collected_time || "");
+
+async function compute() {
+  const collections = await fetchAll("collections");
+  let bins = [];
+  try { bins = await fetchAll("bins"); } catch {}
+  return LOCATIONS.map(loc => {
+    const ids = new Set(loc.binIds.map(String));
+    if (!ids.size) bins.filter(b => hasMatch(b, loc.match)).forEach(b => [b.bin_id, b.id].forEach(v => v != null && ids.add(String(v))));
+    let m = collections.filter(r => ids.has(String(r.bin_id)));
+    if (!m.length) m = collections.filter(r => hasMatch(r, loc.match));
+    m = m.filter(r => r.collected_date).sort((a, b) => stamp(b).localeCompare(stamp(a)));
+    return { loc, latest: m[0] || null, count: m.length };
+  });
+}
+
+function toDate(r) {
+  const t = /^\d{1,2}:\d{2}/.test(r.collected_time || "") ? r.collected_time.slice(0, 5) : "00:00";
+  return new Date(String(r.collected_date).slice(0, 10) + "T" + t + ":00");
+}
+function ago(d) {
+  const mins = Math.round((Date.now() - d) / 60000);
+  if (mins < 0) return "scheduled";
+  if (mins < 60) return mins + " min ago";
+  if (mins < 1440) return Math.round(mins / 60) + " hr ago";
+  const days = Math.floor(mins / 1440);
+  return days + (days === 1 ? " day ago" : " days ago");
+}
+function fmt(r) {
+  const d = toDate(r), hasT = /^\d{1,2}:\d{2}/.test(r.collected_time || "");
+  return { text: d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) +
+    (hasT ? " · " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" }) : ""), rel: ago(d) };
+}
+const icon = has => ({ path: google.maps.SymbolPath.CIRCLE, scale: 11, fillColor: has ? "#043927" : "#8a9a90", fillOpacity: 1, strokeColor: "#c4b581", strokeWeight: 4 });
+
+function popup(res) {
+  if (!res.latest) return `<div style="font-family:system-ui,sans-serif"><strong style="color:#043927">${esc(res.loc.name)}</strong><br>No waste collections found yet.</div>`;
+  const f = fmt(res.latest);
+  return `<div style="font-family:system-ui,sans-serif"><strong style="color:#043927">${esc(res.loc.name)}</strong><br>Last waste collection:<br><strong>${esc(f.text)}</strong><br><span style="color:#5f6e66">${esc(f.rel)}${res.latest.driver_name ? " · " + esc(res.latest.driver_name) : ""}</span></div>`;
+}
+
+function select(i) {
+  selected = i;
+  info.setContent(popup(results[i]));
+  info.open({ anchor: markers[i], map });
+  map.panTo(markers[i].getPosition());
+  renderList();
+}
+
+function renderList() {
+  $("list").innerHTML = results.map((r, i) => {
+    const f = r.latest ? fmt(r.latest) : null;
+    return `<button class="loc ${r.latest ? "" : "none"} ${selected === i ? "on" : ""}" data-i="${i}"><b>${esc(r.loc.name)}</b><span>${f ? esc(f.text) + " · " + esc(f.rel) : "No collections found"}</span></button>`;
+  }).join("");
+  document.querySelectorAll(".loc").forEach(b => b.onclick = () => select(+b.dataset.i));
+}
+
+async function refresh() {
+  try {
+    results = await compute();
+    $("err").style.display = "none";
+    results.forEach((r, i) => { markers[i].setIcon(icon(!!r.latest)); });
+    if (selected !== null) info.setContent(popup(results[selected]));
+    renderList();
+    const none = results.filter(r => !r.latest).map(r => r.loc.name);
+    $("hint").textContent = none.length ? "No matching collections for: " + none.join(", ") + ". Add their bin IDs to binIds in the page script if auto-matching misses them." : "";
+  } catch (e) {
+    $("err").style.display = "block";
+    $("err").textContent = "Supabase error: " + (e.message || e) + ". Check that collections allows select for the anon role.";
+  }
+}
+
+function initMap() {
+  map = new google.maps.Map($("map"), { center: { lat: 38.5605, lng: -121.4238 }, zoom: 16, mapTypeControl: true, streetViewControl: true, fullscreenControl: true });
+  info = new google.maps.InfoWindow();
+  const bounds = new google.maps.LatLngBounds();
+  LOCATIONS.forEach((loc, i) => {
+    const m = new google.maps.Marker({ position: loc, map, title: loc.name, icon: icon(false) });
+    m.addListener("click", () => select(i));
+    m.addListener("dragend", e => {
+      loc.lat = e.latLng.lat(); loc.lng = e.latLng.lng();
+      try { const p = {}; LOCATIONS.forEach(l => p[l.name] = { lat: +l.lat.toFixed(6), lng: +l.lng.toFixed(6) }); localStorage.setItem("pinPositions", JSON.stringify(p)); } catch {}
+    });
+    markers.push(m); bounds.extend(loc);
+  });
+  map.fitBounds(bounds, 60);
+  results = LOCATIONS.map(loc => ({ loc, latest: null, count: 0 }));
+  renderList(); refresh();
+  if (REFRESH_SECONDS > 0) setInterval(refresh, REFRESH_SECONDS * 1000);
+}
+
+$("refresh").onclick = refresh;
+$("edit").onclick = () => {
+  editing = !editing;
+  markers.forEach(m => m.setDraggable(editing));
+  $("edit").textContent = editing ? "Done adjusting" : "Adjust pins";
+  $("copy").hidden = !editing;
+  $("hint").textContent = editing ? "Drag each pin onto its building. Positions are saved in this browser; use Copy positions to put them in the code." : "";
+};
+$("copy").onclick = async () => {
+  const txt = JSON.stringify(LOCATIONS.map(l => ({ name: l.name, lat: +l.lat.toFixed(6), lng: +l.lng.toFixed(6) })), null, 2);
+  try { await navigator.clipboard.writeText(txt); $("hint").textContent = "Positions copied."; } catch { prompt("Copy these positions:", txt); }
+};
+
+window.gm_authFailure = () => {
+  $("err").style.display = "block";
+  $("err").textContent = "Google Maps rejected the API key. Check that the Maps JavaScript API is enabled, billing is on, and the key allows this website's address.";
+};
+const s = document.createElement("script");
+s.src = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_KEY + "&callback=initMap&v=weekly";
+s.async = true;
+s.onerror = () => { $("err").style.display = "block"; $("err").textContent = "The Google Maps script could not load."; };
+document.head.appendChild(s);
+</script>
+</body>
+</html>

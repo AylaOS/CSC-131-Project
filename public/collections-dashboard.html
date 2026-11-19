@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pickup dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f3f4ef;--panel:#fff;--ink:#14231b;--mute:#5f6e66;--line:#dfe3d8;--accent:#0b5d3b;--gold:#c9a227;--warn:#8f6a00;--bad:#b3261e;--row:#f7f8f3;--hdr:#06402b}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1612;--panel:#16231c;--ink:#e7eee9;--mute:#94a39a;--line:#2a3a32;--accent:#5fc79a;--gold:#e3c25a;--warn:#e3c25a;--bad:#f2867d;--row:#1b2921;--hdr:#06402b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:28px 20px 60px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px;background:var(--hdr);color:#fff;padding:18px 22px;border-radius:8px;border-bottom:4px solid var(--gold)}
+header .sub{color:#c9d8cf}
+.header-actions{display:flex;gap:8px}
+#refresh{background:var(--gold);color:#14231b;border-color:var(--gold);font-weight:600}
+#refresh:hover{filter:brightness(1.08)}
+.home-link{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);border-radius:6px;padding:6px 10px}
+.home-link:hover{border-color:var(--gold)}
+h1{font-size:26px;font-weight:600;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:600;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:inline-block}
+.sub{color:var(--mute);font-size:13px}
+button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+button{cursor:pointer}button:hover{border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.filters label{display:flex;flex-direction:column;gap:4px;color:var(--mute);font-size:13px;flex:1 1 150px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:8px;padding:16px}
+.kpi b{display:block;font-size:34px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi span{color:var(--mute);font-size:13px}
+.gauge{height:6px;background:var(--line);border-radius:3px;margin-top:10px;overflow:hidden}
+.gauge i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kpi.issue b{color:var(--warn)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.grid2 .panel{margin:0}
+.grid2 td,.grid2 th{white-space:normal}
+.grid2 td:first-child{white-space:nowrap}
+@media (max-width:800px){.grid2{grid-template-columns:1fr}}
+.chartbox{position:relative;height:320px}
+.chartbox.short{height:240px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--accent)}
+tbody tr:nth-child(even){background:var(--row)}
+tbody tr.clickable{cursor:pointer}
+tbody tr.clickable:hover,tbody tr.clickable:focus{outline:none;box-shadow:inset 3px 0 0 var(--gold)}
+.tag{color:var(--warn);font-weight:500}
+.tag.bad{color:var(--bad)}
+.tag.good{color:var(--accent)}
+.empty{color:var(--mute);font-size:14px;margin:0}
+.more{margin-top:12px}
+.msg{padding:14px 16px;border-radius:8px;border:1px solid var(--line);background:var(--panel);margin-bottom:16px}
+.msg.err{border-color:#c0392b}.msg code{font-size:13px}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.photo{display:grid;gap:6px;padding:0 0 10px;overflow:hidden;text-align:left;font-size:13px}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--line)}
+.photo span{padding:0 10px}
+dialog{width:min(640px,94vw);max-height:90vh;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+dialog::backdrop{background:rgba(6,64,43,.55)}
+.dialog-body{position:relative;padding:24px}
+.dialog-close{position:absolute;top:12px;right:12px}
+.dialog-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:14px}
+.dialog-photos img{width:100%;border-radius:6px}
+.details th{width:40%;color:var(--mute);font-weight:500}
+.details td{white-space:normal}
+</style>
+</head>
+<body data-page="dashboard">
+<main>
+  <header>
+    <div><h1>Pickup dashboard</h1><div class="sub" id="sub">Loading…</div></div>
+    <div class="header-actions">
+      <a class="home-link" href="index.html">← Home</a>
+      <button id="refresh">Refresh now</button>
+    </div>
+  </header>
+  <div id="notice"></div>
+
+  <section class="panel" aria-label="Filters">
+    <div class="filters">
+      <label>From <input type="date" id="fFrom"></label>
+      <label>To <input type="date" id="fTo"></label>
+      <label>Location <select id="fLocation"></select></label>
+      <label>Waste stream <select id="fStream"></select></label>
+      <label>Driver <select id="fDriver"></select></label>
+      <button id="fReset">Reset</button>
+    </div>
+  </section>
+
+  <section class="kpis" aria-live="polite">
+    <div class="kpi"><b id="kTotal">–</b><span id="kTotalSub">Pickups</span></div>
+    <div class="kpi"><b id="kFull">–</b><span>Average fullness</span><div class="gauge"><i id="gFull"></i></div></div>
+    <div class="kpi"><b id="kLow">–</b><span id="kLowSub">Collected under half full</span></div>
+    <div class="kpi issue"><b id="kIssues">–</b><span id="kIssuesSub">Pickups with issues</span></div>
+    <div class="kpi issue"><b id="kContam">–</b><span id="kContamSub">Contamination rate</span></div>
+  </section>
+
+  <section class="panel">
+    <h2>Pickups by date</h2>
+    <div class="chartbox"><canvas id="chartDate" role="img" aria-label="Bar chart of pickups per date"></canvas></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Pickups with issues by date</h2>
+      <div class="chartbox short"><canvas id="chartIssues" role="img" aria-label="Bar chart of pickups with issues per date"></canvas></div>
+      <div class="sub">An issue is a missed or partial service, overflow, contamination or a damaged bin.</div>
+    </section>
+    <section class="panel">
+      <h2>Average fullness by date</h2>
+      <div class="chartbox short"><canvas id="chartFullness" role="img" aria-label="Line chart of average fullness per date"></canvas></div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Pickups by location</h2>
+      <div class="chartbox"><canvas id="chartLocation" role="img" aria-label="Bar chart of the ten locations with the most pickups"></canvas></div>
+      <div class="sub" id="locationNote"></div>
+    </section>
+    <section class="panel">
+      <h2>Service issues by location</h2>
+      <div class="chartbox"><canvas id="chartService" role="img" aria-label="Bar chart of missed or partial services by location"></canvas></div>
+      <div class="sub" id="serviceNote"></div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Pickups by waste stream</h2>
+      <div class="chartbox short"><canvas id="chartStream" role="img" aria-label="Bar chart of pickups by waste stream"></canvas></div>
+    </section>
+    <section class="panel">
+      <h2>Fullness at time of collection</h2>
+      <div class="chartbox short"><canvas id="chartLevels" role="img" aria-label="Bar chart of pickups at each fullness level"></canvas></div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Contamination rate by waste stream</h2>
+      <div class="chartbox short"><canvas id="chartContamRate" role="img" aria-label="Bar chart of contamination rate by waste stream"></canvas></div>
+    </section>
+    <section class="panel">
+      <h2>Common contamination types</h2>
+      <div class="chartbox short"><canvas id="chartContamTypes" role="img" aria-label="Bar chart of contamination types"></canvas></div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Bins collected under half full</h2>
+      <div class="sub" id="underRule"></div>
+      <div class="scroll" id="tableUnder"></div>
+    </section>
+    <section class="panel">
+      <h2>Overflowing or frequently full bins</h2>
+      <div class="sub" id="fullRule"></div>
+      <div class="scroll" id="tableFull"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Missed, delayed and incomplete services</h2>
+    <div class="scroll" id="tableService"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Collection photos</h2>
+    <div class="sub" style="margin-bottom:10px">Select a photo to see its pickup.</div>
+    <div class="photos" id="photos"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Most recent pickups</h2>
+    <div class="scroll" id="tableRecent"></div>
+  </section>
+</main>
+
+<dialog id="details"></dialog>
+
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
