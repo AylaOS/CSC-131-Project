@@ -63,6 +63,20 @@
       form.querySelectorAll("button, input, select, textarea").forEach(c => { c.disabled = false; });
       el.bin.disabled = true; //until the location is picked
       lockBinFields();
+
+      // QR labels open survey.html?binId=... and preselect that bin.
+      const qrBinId = new URLSearchParams(window.location.search).get("binId");
+      if (qrBinId) {
+        const qrBin = findBin(qrBinId);
+        if (qrBin) {
+          el.location.value = qrBin.location;
+          showBinsFor(qrBin.location);
+          el.bin.value = qrBin.binId;
+          showBinDetails(qrBin);
+        } else {
+          showError("Unknown QR bin ID. Please select a bin manually.");
+        }
+      }
     } catch (err) {
       showError(`Couldn't load the bin list from the server. Refresh the page to try again. (${err.message})`);
     }
