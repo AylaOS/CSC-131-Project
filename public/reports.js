@@ -6,6 +6,13 @@
   const LOW_FILL = 50;
   const RESOLVED_KEY = "wasteCollectionResolvedRequests";
   let records = [], bins = [], view = [], binSummary = [], loaded = false;
+  const QR_PAGE_SIZE = 12;
+  let qrPage = 0;
+  let qrOpen = false;
+  let qrReady = false;
+  let qrLoading = false;
+  let binsLoaded = false;
+  let qrLibraryPromise;
   let resolved = new Set();
   try { resolved = new Set(JSON.parse(localStorage.getItem(RESOLVED_KEY) || "[]")); } catch {}
 
@@ -72,17 +79,22 @@
   async function load() {
     $("refresh-reports").disabled = true; loaded = false; toggleExports();
     $("report-status").textContent = "Loading collection records…";
-    const [r,b] = await Promise.allSettled([get("/api/collections","records"),get("/api/bins","bins")]);
+    const [r] = await Promise.allSettled([get("/api/collections","records")]);
     records = r.status === "fulfilled" ? r.value : [];
-    bins = b.status === "fulfilled" ? b.value : [];
     loaded = r.status === "fulfilled";
     $("report-status").textContent = loaded ? `${records.length} records loaded · ${new Date().toLocaleTimeString()}` : `Could not load collection records: ${r.reason.message}. Check the server/database, then refresh.`;
-    $("qr-status").textContent = b.status === "fulfilled" ? `${bins.length} registered bins` : `Could not load bins: ${b.reason.message}`;
     $("connection-status").textContent = loaded ? "Connected" : "Data unavailable";
     $("connection-status").className = "connection-status "+(loaded?"online":"offline");
     filterFields.filter(f=>f[2]==="select").forEach(([key])=>setOptions($("r-"+key),unique(records.map(r=>r[key]))));
-    setOptions($("qr-location"),unique(bins.map(b=>b.location)),"All locations");
-    render(); renderQr(); $("refresh-reports").disabled = false;
+    render();
+    $("refresh-reports").disabled = false;
+    // Refresh the bin list separately, only if QR labels are open.
+    if (qrOpen && !qrLoading) {
+      binsLoaded = false;
+      void loadQr();
+    } else if (!qrOpen) {
+      binsLoaded = false;
+    }
   }
   function getBinSummary(rows) {
     const groups = new Map();
@@ -161,22 +173,126 @@
   function print(mode) {
     document.body.classList.remove("print-report","print-qr");document.body.classList.add(mode);window.print();
   }
-  function renderQr() {
-    const location=$("qr-location").value;
-    const selected=bins.filter(b=>!location||b.location===location);
-    const grid=$("qr-grid");grid.replaceChildren();
-    $("print-qr").disabled=!selected.length||typeof QRCode!=="function";
-    if(!selected.length) { grid.append(text("p","No matching registered bins.","muted"));return; }
-    if(typeof QRCode!=="function") grid.append(text("p","QR library unavailable. Survey links are still available; reconnect to load printable codes.","muted"));
-    for(const b of selected) {
-      const url=new URL("survey.html",window.location.href);url.searchParams.set("binId",b.binId);
-      const card=document.createElement("div");card.className="qr-card";
-      const code=document.createElement("div");code.className="qr-code";
-      if(typeof QRCode==="function") new QRCode(code,{text:url.href,width:112,height:112});
-      const link=text("a",b.binId);link.href=url.href;
-      card.append(code,link,text("div",b.location),text("div",`${b.wasteStream} · ${b.container}`,"muted"));grid.append(card);
+  // Load the QR library only when labels are requested.
+  function loadQrLibrary() {
+    if (typeof window.QRCode === "function") return Promise.resolve();
+    if (!qrLibraryPromise) {
+      qrLibraryPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+        const timer = setTimeout(() => fail(), 10000);
+        function fail() {
+          clearTimeout(timer);
+          script.remove();
+          reject(new Error("QR library unavailable"));
+        }
+        script.onload = () => {
+          clearTimeout(timer);
+          if (typeof window.QRCode === "function") resolve();
+          else fail();
+        };
+        script.onerror = fail;
+        document.head.append(script);
+      }).catch(error => {
+        qrLibraryPromise = undefined;
+        throw error;
+      });
+    }
+    return qrLibraryPromise;
+  }
+
+  // Do not fetch the bin list or generate any QR codes on initial page load.
+  async function loadQr() {
+    if (qrLoading || !qrOpen) return;
+    qrLoading = true;
+    qrReady = false;
+    for (const id of ["qr-location", "qr-search", "qr-prev", "qr-next", "print-qr"]) $(id).disabled = true;
+    $("qr-status").textContent = "Loading bin labels…";
+    $("qr-grid").replaceChildren();
+    $("qr-page").textContent = "";
+    try {
+      if (!binsLoaded) {
+        bins = await get("/api/bins", "bins");
+        binsLoaded = true;
+      }
+      // A library failure should not prevent the survey links from working.
+      await loadQrLibrary().catch(() => {});
+      qrReady = true;
+      setOptions($("qr-location"), unique(bins.map(b => b.location)), "All locations");
+      $("qr-location").disabled = false;
+      $("qr-search").disabled = false;
+      if (qrOpen) renderQr();
+    } catch (error) {
+      $("qr-status").textContent = `Could not load bins: ${error.message}. Hide and reopen QR codes to retry.`;
+    } finally {
+      qrLoading = false;
     }
   }
+
+  function renderQr() {
+    if (!qrOpen || !qrReady) return;
+    const location = $("qr-location").value;
+    const query = $("qr-search").value.trim().toLowerCase();
+    const selected = bins.filter(b =>
+      (!location || b.location === location) &&
+      (!query || `${b.binId} ${b.location}`.toLowerCase().includes(query))
+    );
+    const pageCount = Math.max(1, Math.ceil(selected.length / QR_PAGE_SIZE));
+    qrPage = Math.max(0, Math.min(qrPage, pageCount - 1));
+    const start = qrPage * QR_PAGE_SIZE;
+    const pageBins = selected.slice(start, start + QR_PAGE_SIZE);
+    const grid = $("qr-grid");
+    grid.replaceChildren();
+    $("qr-prev").disabled = qrPage === 0;
+    $("qr-next").disabled = qrPage >= pageCount - 1;
+    $("qr-page").textContent = selected.length ? `Page ${qrPage + 1} of ${pageCount}` : "";
+    const hasLibrary = typeof window.QRCode === "function";
+    $("qr-status").textContent = selected.length
+      ? `Showing ${start + 1}–${start + pageBins.length} of ${selected.length} bins.`
+      : "No matching registered bins.";
+    if (!hasLibrary) $("qr-status").textContent += " QR library unavailable; survey links still work. Reopen the section to retry.";
+    let generated = 0;
+    // Generate only the current 12 labels; discard the previous page.
+    for (const b of pageBins) {
+      const url = new URL("survey.html", window.location.href);
+      url.searchParams.set("binId", b.binId);
+      const card = document.createElement("div");
+      card.className = "qr-card";
+      const code = document.createElement("div");
+      code.className = "qr-code";
+      if (hasLibrary) {
+        try {
+          new window.QRCode(code, {text: url.href, width: 144, height: 144, colorDark: "#000000", colorLight: "#ffffff"});
+          generated++;
+        } catch {
+          code.textContent = "QR unavailable";
+        }
+      } else {
+        code.hidden = true;
+      }
+      const link = text("a", b.binId);
+      link.href = url.href;
+      card.append(code, link, text("div", b.location), text("div", `${b.wasteStream} · ${b.container}`, "muted"));
+      grid.append(card);
+    }
+    if (hasLibrary && generated !== pageBins.length) $("qr-status").textContent += " Some labels could not be generated.";
+    $("print-qr").disabled = !generated || generated !== pageBins.length;
+  }
+
+  $("toggle-qr").addEventListener("click", () => {
+    qrOpen = !qrOpen;
+    $("qr-content").hidden = !qrOpen;
+    $("toggle-qr").textContent = qrOpen ? "Hide QR codes" : "Show QR codes";
+    $("toggle-qr").setAttribute("aria-expanded", String(qrOpen));
+    if (qrOpen) {
+      void loadQr();
+    } else {
+      $("qr-grid").replaceChildren();
+    }
+  });
+  $("qr-prev").addEventListener("click", () => { qrPage--; renderQr(); });
+  $("qr-next").addEventListener("click", () => { qrPage++; renderQr(); });
+  $("qr-search").addEventListener("input", () => { qrPage = 0; renderQr(); });
   buildFilters();
   $("refresh-reports").addEventListener("click",load);
   $("export-records").addEventListener("click",()=>{
@@ -190,6 +306,6 @@
   $("copy-summary").addEventListener("click",async()=>{try {await navigator.clipboard.writeText($("summary-text").textContent);$("copy-summary").textContent="Copied!";setTimeout(()=>$("copy-summary").textContent="Copy summary",1500);} catch {alert("Copy failed. Select the summary text and copy it manually.");}});
   ["a-cost","a-minutes","a-fuel"].forEach(id=>$(id).addEventListener("input",render));
   $("show-resolved").addEventListener("change",renderRequests);
-  $("qr-location").addEventListener("change",renderQr);
+  $("qr-location").addEventListener("change", () => { qrPage = 0; renderQr(); });
   load();
 })();

@@ -8,6 +8,17 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
+  <style>
+    #qr-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    #qr-grid .qr-code { width: 176px; min-height: 176px; padding: 16px; box-sizing: border-box; margin: 0 auto 8px; background: #fff; align-items: center; }
+    #qr-grid .qr-code img, #qr-grid .qr-code canvas { max-width: 100%; height: auto; }
+    #qr-controls, #qr-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 12px 0; }
+    #qr-controls .filter-field { max-width: 280px; }
+    @media print {
+      body.print-qr #qr-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      body.print-qr #qr-grid .qr-card { break-inside: avoid; }
+    }
+  </style>
 </head>
 <body data-page="reports">
   <header class="site-header">
@@ -92,12 +103,23 @@
     <section class="panel">
       <div class="panel-head">
         <h2>Bin QR codes</h2>
-        <button type="button" class="secondary-button no-print" id="print-qr">Print QR labels</button>
+        <button type="button" class="secondary-button no-print" id="toggle-qr" aria-expanded="false" aria-controls="qr-content">Show QR codes</button>
       </div>
-      <p class="panel-sub">Each code opens the survey with that bin already selected. Print labels from the deployed website address; localhost links will not work on other devices.</p>
-      <div class="filter-field no-print qr-filter"><label for="qr-location">Location</label><select id="qr-location"></select></div>
-      <p id="qr-status" class="muted"></p>
-      <div id="qr-grid" class="qr-grid"></div>
+      <p class="panel-sub">Generate labels only when needed. Each code opens the survey with its bin selected. Use the deployed website address for labels that must work on other devices.</p>
+      <div id="qr-content" hidden>
+        <div id="qr-controls" class="no-print">
+          <div class="filter-field"><label for="qr-location">Location</label><select id="qr-location" disabled><option value="">All locations</option></select></div>
+          <div class="filter-field"><label for="qr-search">Find a bin</label><input id="qr-search" type="search" placeholder="Bin ID or location" disabled></div>
+          <button type="button" class="secondary-button" id="print-qr" disabled>Print current page</button>
+        </div>
+        <p id="qr-status" class="muted" role="status" aria-live="polite"></p>
+        <div id="qr-grid" class="qr-grid"></div>
+        <div id="qr-pagination" class="no-print">
+          <button type="button" class="secondary-button" id="qr-prev" disabled>Previous</button>
+          <span id="qr-page" aria-live="polite"></span>
+          <button type="button" class="secondary-button" id="qr-next" disabled>Next</button>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -107,8 +129,6 @@
 
   <script src="data.js"></script>
   <script src="app.js"></script>
-  <script src="analytics.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="reports.js"></script>
 </body>
 </html>
