@@ -99,3 +99,28 @@ button:hover{
         max-width: 400px;
     }
 }
+
+.role-tabs {
+    display: flex;
+    margin-bottom: 16px;
+    border: 1px solid #043927;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.role-tabs .role-tab {
+    flex: 1;
+    margin-top: 0;
+    border: 0;
+    border-radius: 0;
+    background: #ffffff;
+    color: #043927;
+    font-weight: bold;
+}
+.role-tabs .role-tab.active {
+    background: #043927;
+    color: #ffffff;
+}
+#loginMessage {
+    color: #b3261e;
+    min-height: 1.2em;
+}

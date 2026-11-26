@@ -21,7 +21,12 @@ This file displays the login page
     <div class="login-page">
         <div class="login-section">
             <div class="login-container">
-                <h1>Admin Login</h1>
+                <h1 id="loginTitle">Driver Sign In</h1>
+
+                <div class="role-tabs" role="group" aria-label="Sign in as">
+                    <button type="button" class="role-tab active" data-role="driver" aria-pressed="true">Driver</button>
+                    <button type="button" class="role-tab" data-role="supervisor" aria-pressed="false">Supervisor</button>
+                </div>
 
                 <form id="loginForm">
                     <label for="email">Email</label>
