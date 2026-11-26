@@ -57,11 +57,13 @@
     form.querySelectorAll("button, input, select, textarea").forEach(c => { c.disabled = true; });
 
     try {
-      const [options, binData] = await Promise.all([getJson("/api/options"), getJson("/api/bins")]);
+      const [me, options, binData] = await Promise.all([window.authReady, getJson("/api/options"), getJson("/api/bins")]);
+      el.driver.value = me.name; //name comes from the logged-in account
       bins = binData.bins || [];
       buildForm(options);
       form.querySelectorAll("button, input, select, textarea").forEach(c => { c.disabled = false; });
       el.bin.disabled = true; //until the location is picked
+      el.driver.readOnly = true; 
       lockBinFields();
 
       // QR labels open survey.html?binId=... and preselect that bin.
@@ -319,7 +321,7 @@
     el.submit.textContent = "Submitting…";
     try {
       const photoData = await Promise.all(photos.map(async p => ({ data: await blobToBase64(p.blob) })));
-      const res = await fetch("/api/collections", {
+      const res = await window.api("/api/collections", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ record, photos: photoData })
@@ -369,7 +371,7 @@
   // HELPER FUNCTIONS
 
   async function getJson(url) {
-    const res = await fetch(url);
+    const res = await window.api(url);
     if (!res.ok) throw new Error(`${url} returned ${res.status}`);
     return res.json();
   }

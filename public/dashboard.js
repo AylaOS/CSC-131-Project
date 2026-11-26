@@ -31,7 +31,7 @@
 //Loads data from collections
   async function load() {
     try {
-      const res = await fetch("/api/collections");
+      const res = await window.api("/api/collections");
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error || `Server returned ${res.status}`);
       rows = body.records || [];

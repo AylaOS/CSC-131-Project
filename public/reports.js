@@ -70,7 +70,7 @@
     el.value = values.includes(previous) ? previous : "";
   }
   async function get(url,key) {
-    const response = await fetch(url,{cache:"no-store"});
+    const response = await window.api(url,{cache:"no-store"});
     const body = await response.json().catch(()=>({}));
     if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
     if (!Array.isArray(body[key])) throw new Error(`Invalid ${key} response`);
