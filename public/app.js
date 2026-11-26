@@ -1,180 +1,99 @@
-(function setupCurrentRole() {
-  const storage = "wasteCollectionRole";
-  const roleSelect = document.querySelector("#role-select");
-  const roles = [//we can add more if we need it
-    { value: "driver", label: "Driver" },
-    { value: "admin", label: "Admin/Supervisor" }
-  ];
-  const driverPages = ["index", "survey"];
-  let currentRole = "driver";
+/* Login session, roles and navigation, shared by every page except the login pages.
+This only controls what the browser shows. The real access check happens on
+the server (server/auth.js), so editing this file can't unlock any data. */
+(function () {
+  "use strict";
 
-  function normalizeRole(value) {
-    return value === "admin" || value === "supervisor" ? "admin" : "driver"; //The supervisor role is the same as admin right now.
+  const SUPABASE_URL = "https://xwzjokwjhadsliuoufpu.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_1cdPK9k5b5eTuXDQ27Qg5g_3sit3svN";
+  const LOGIN_PAGE = "/loginAndSignIn/login.html";
+
+  const PAGES = {
+    driver: ["index", "survey"],
+    supervisor: ["index", "survey", "dashboard", "reports"]
+  };
+  const LABELS = { driver: "Driver", supervisor: "Supervisor" };
+
+  document.documentElement.classList.add("auth-pending");
+
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function goToLogin() {
+    window.location.replace(LOGIN_PAGE);
   }
 
-  function readRole() {
-    try {
-      return normalizeRole(localStorage.getItem(storage));
-    } catch {
-      return currentRole;
+  async function accessToken() {
+    const { data } = await client.auth.getSession();
+    return data.session ? data.session.access_token : null;
+  }
+
+  window.api = async function (url, options = {}) {
+    const token = await accessToken();
+    if (!token) {
+      goToLogin();
+      throw new Error("Not logged in.");
     }
-  }
-  function applyRole(value) {
-    currentRole = normalizeRole(value);
-    if (roleSelect) roleSelect.value = currentRole;
-    const canView = page => currentRole === "admin" || driverPages.includes(page);
+    const headers = { ...(options.headers || {}), Authorization: `Bearer ${token}` };
+    const res = await fetch(url, { ...options, headers });
+    if (res.status === 401) goToLogin();
+    return res;
+  };
 
-    document.querySelectorAll("[data-page-link]").forEach(link => {
-      link.hidden = !canView(link.dataset.pageLink);
-    });
-    document.querySelectorAll("[data-role-label]").forEach(label => {
-      label.textContent = currentRole === "admin" ? "Admin/Supervisor" : "Driver";
-    });
+  window.authReady = (async () => {
+    const res = await window.api("/api/me");
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      showBlocked(body.error || `Couldn't check your account (error ${res.status}).`);
+      throw new Error(body.error || "Account check failed.");
+    }
+    applyUser(body.user);
+    return body.user;
+  })();
+  window.authReady.catch(() => {});
 
+  function applyUser(user) {
+    const allowed = PAGES[user.role] || [];
     const page = document.body.dataset.page;
-    if (page && !canView(page)) {
-      const main = document.querySelector("main");
-      if (main) main.hidden = true;
-      window.location.replace("index.html");
-    }
-  }
-
-  if (roleSelect) {
-    roleSelect.replaceChildren();
-    roles.forEach(role => {
-      const option = document.createElement("option");
-      option.value = role.value;
-      option.textContent = role.label;
-      roleSelect.appendChild(option);
-    });
-    roleSelect.addEventListener("change", () => {
-      currentRole = normalizeRole(roleSelect.value);
-      try {
-        localStorage.setItem(storage, currentRole);
-      } catch {
-      }
-      applyRole(currentRole);
-    });
-  }
-  
-  applyRole(readRole());
-
-  window.addEventListener("pageshow", () => applyRole(readRole()));
-
-  window.addEventListener("storage", event => {
-    if (event.key === storage || event.key === null) applyRole(readRole());
-  });
-})();
-
-
-const inventoryRecords = [
-  {
-    accountNumber: "201003",
-    location: "ALPINE",
-    containers: [
-      {
-        quantity: "2",
-        size: "4YD",
-        frequency: "3",
-        serviceDay: "MON/WED/FRI"
-      },
-      {
-        quantity: "1",
-        size: "64GAL",
-        frequency: "1",
-        serviceDay: "TUE"
-      }
-    ]
-  },
-  {
-    accountNumber: "201005",
-    location: "AMADOR",
-    containers: [
-      {
-        quantity: "1",
-        size: "4YD",
-        frequency: "2",
-        serviceDay: "THU/FRI"
-      },
-      {
-        quantity: "1",
-        size: "4YD",
-        frequency: "1",
-        serviceDay: "WED"
-      },
-      {
-        quantity: "1",
-        size: "64GAL",
-        frequency: "1",
-        serviceDay: "TUE"
-      }
-    ]
-  }
-];
-
-const form = document.querySelector("#collection-form");
-const accountSelect = document.querySelector("#account-number");
-const locationInput = document.querySelector("#location");
-const inventorySummary = document.querySelector("#inventory-summary");
-
-if (form && accountSelect) {
-  inventoryRecords.forEach(function (record) {
-    const option = document.createElement("option");
-
-    option.value = record.accountNumber;
-    option.textContent = `${record.accountNumber} - ${record.location}`;
-
-    accountSelect.appendChild(option);
-  });
-
-  accountSelect.addEventListener("change", function () {
-    const selectedRecord = inventoryRecords.find(function (record) {
-      return record.accountNumber === accountSelect.value;
-    });
-
-    if (!selectedRecord) {
-      locationInput.value = "";
-      inventorySummary.value = "";
+    if (page && !allowed.includes(page)) {
+      window.location.replace("/index.html");
       return;
     }
 
-    locationInput.value = selectedRecord.location;
+    document.querySelectorAll("[data-page-link]").forEach(link => {
+      link.hidden = !allowed.includes(link.dataset.pageLink);
+    });
+    document.querySelectorAll("[data-role-label]").forEach(el => { el.textContent = LABELS[user.role] || user.role; });
+    document.querySelectorAll("[data-user-name]").forEach(el => { el.textContent = user.name; });
 
-    inventorySummary.value = selectedRecord.containers
-      .map(function (container) {
-        return `${container.quantity} x ${container.size}, ${container.frequency} pickups, ${container.serviceDay}`;
-      })
-      .join(" | ");
+    document.documentElement.classList.remove("auth-pending");
+  }
+
+  function showBlocked(message) {
+    const main = document.querySelector("main");
+    if (main) {
+      const box = document.createElement("section");
+      box.className = "panel";
+      const p = document.createElement("p");
+      p.textContent = message;
+      box.append(p);
+      main.replaceChildren(box);
+    }
+    document.querySelectorAll("[data-page-link]").forEach(link => { link.hidden = link.dataset.pageLink !== "index"; });
+    document.documentElement.classList.remove("auth-pending");
+  }
+
+  async function logOut() {
+    try {
+      await client.auth.signOut();
+    } finally {
+      goToLogin();
+    }
+  }
+
+  document.querySelectorAll("[data-logout]").forEach(button => button.addEventListener("click", logOut));
+
+  // logging out in one tab logs out every tab
+  client.auth.onAuthStateChange(event => {
+    if (event === "SIGNED_OUT") goToLogin();
   });
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const formData = new FormData(form);
-    const record = Object.fromEntries(formData.entries());
-    const photo = formData.get("photo");
-
-    record.id = Date.now();
-    record.submittedAt = new Date().toISOString();
-    record.photoName = photo.name;
-
-    delete record.photo;
-
-    const savedRecords = JSON.parse(
-      localStorage.getItem("collectionRecords") || "[]"
-    );
-
-    savedRecords.push(record);
-
-    localStorage.setItem(
-      "collectionRecords",
-      JSON.stringify(savedRecords)
-    );
-
-    alert("Collection record saved successfully.");
-
-    form.reset();
-    locationInput.value = "";
-    inventorySummary.value = "";
-  });
-}
+})();
