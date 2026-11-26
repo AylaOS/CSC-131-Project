@@ -28,6 +28,17 @@ async function selectAll(buildQuery) {
 }
 
 module.exports = {
+  async getUserFromToken(token) {
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error || !data || !data.user) return null;
+    return data.user;
+  },
+  async getProfile(userId) {
+    const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
+    check(error, "Profile lookup failed");
+    return data;
+  },
+
   async listBins() {
     return selectAll(() => supabase.from("bins").select("*").eq("active", true).order("bin_id"));
   },

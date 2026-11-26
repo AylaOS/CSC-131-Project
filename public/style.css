@@ -1113,3 +1113,14 @@ footer {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+
+/* ---- Login session (app.js) ---- */
+html.auth-pending main,
+html.auth-pending .main-nav a[data-page-link] {
+  visibility: hidden;
+}
+.user-box { display: grid; gap: 4px; }
+.user-box .user-name { font-weight: bold; }
+.user-box .user-role { font-size: 0.85rem; }
+.user-box .logout-button { margin-top: 6px; padding: 6px 12px; }

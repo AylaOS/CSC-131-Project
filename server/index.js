@@ -9,6 +9,7 @@ const helmet = require("helmet");
 
 const store = require("./store");
 const { buildCollectionRow, ValidationError, OPTIONS } = require("./validate");
+const { requireRole, AuthError } = require("./auth");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,28 +30,37 @@ app.use(helmet({
 
 app.use(express.json({ limit: "8mb" })); //room for 3 photos
 
+/* ACCESS RULES: every /api route needs a logged-in user. Viewing all records needs a supervisor. */
+const anyUser = requireRole();
+const supervisorOnly = requireRole("supervisor");
+
+/* CURRENT USER: the front end uses this to show the name/role and decide which pages to show */
+app.get("/api/me", anyUser, (req, res) => res.json({ user: req.user }));
+
 /* FORM OPTIONS (same lists validate.js checks against) */
 
-app.get("/api/options", (req, res) => res.json(OPTIONS));
+app.get("/api/options", anyUser, (req, res) => res.json(OPTIONS));
 
 /* BINS */
 
-app.get("/api/bins", wrap(async (req, res) => {
+app.get("/api/bins", anyUser, wrap(async (req, res) => {
   const bins = await store.listBins();
   res.json({ bins: bins.map(binForClient) });
 }));
 
 /* COLLECTIONS */
 
-app.post("/api/collections", wrap(async (req, res) => {
+app.post("/api/collections", anyUser, wrap(async (req, res) => {
   const { record, photos } = req.body || {};
+  //the driver name comes from the logged-in account, not from what the browser sent
+  if (record) record.driverName = req.user.name;
 
   const bin = record && (await store.getBin(String(record.binId || "")));
   if (!bin) throw new ValidationError("Unknown bin ID.");
 
   const row = buildCollectionRow(record, bin);
+  row.submitted_by = req.user.id;
 
-  //check photos before saving
   const images = (Array.isArray(photos) ? photos : []).slice(0, MAX_PHOTOS).map((p, i) => {
     const buffer = Buffer.from(String(p.data || ""), "base64");
     if (!buffer.length || buffer.length > MAX_PHOTO_BYTES) throw new ValidationError(`Photo ${i + 1} is empty or too large.`);
@@ -58,7 +68,6 @@ app.post("/api/collections", wrap(async (req, res) => {
     return buffer;
   });
 
-  //Photos go under <date>/<bin>/<random>.jpg in storage.
   for (const buffer of images) {
     const photoPath = `${row.collected_date}/${bin.bin_id}/${crypto.randomUUID()}.jpg`;
     row.photo_paths.push(await store.savePhoto(photoPath, buffer, "image/jpeg"));
@@ -68,7 +77,7 @@ app.post("/api/collections", wrap(async (req, res) => {
   res.status(201).json({ ok: true, recordId: recordId(id) });
 }));
 
-app.get("/api/collections", wrap(async (req, res) => {
+app.get("/api/collections", supervisorOnly, wrap(async (req, res) => {
   const rows = await store.listCollections();
   const urls = await store.photoUrls(rows.flatMap(r => r.photo_paths || []));
   res.json({ records: rows.map(r => collectionForClient(r, urls)) });
@@ -76,14 +85,12 @@ app.get("/api/collections", wrap(async (req, res) => {
 
 app.use("/api", (req, res) => res.status(404).json({ error: "Not found." }));
 
-/* WEBSITE  */
 //Updated the host redirection page to CSC-131-Project/public/loginAndSignIn
 app.get("/", (req, res) => res.redirect("/loginAndSignIn/login.html"));
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-/* ERROR HANDLING */
-
 app.use((err, req, res, next) => {
+  if (err instanceof AuthError) return res.status(err.status).json({ error: err.message });
   if (err instanceof ValidationError) return res.status(400).json({ error: err.message });
   if (err.type === "entity.too.large") return res.status(413).json({ error: "Upload is too large." });
   console.error(err);
@@ -93,8 +100,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT} (storage: ${store.kind})`);
 });
-
-/* HELPERS */
 
 function wrap(handler) {
   return (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
@@ -127,7 +132,7 @@ function collectionForClient(r, urls) {
     binId: r.bin_id,
     wasteStream: r.waste_stream || "",
     container: r.container_size || "",
-    fullness: r.fullness,               //number, or NULL if not recorded
+    fullness: r.fullness,
     serviceCompleted: r.service_completed,
     serviceIssue: r.service_issue || "",
     overflow: Boolean(r.overflow),

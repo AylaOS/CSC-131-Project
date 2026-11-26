@@ -18,9 +18,10 @@
       <h1>Waste Collection Survey and Dashboard</h1>
     </div>
 
-    <div class="role-indicator">
-      <label for="role-select">Current role (demo)</label>
-      <select id="role-select"></select>
+    <div class="role-indicator user-box">
+      <span class="user-name" data-user-name></span>
+      <span class="user-role" data-role-label></span>
+      <button type="button" class="secondary-button logout-button" data-logout>Log out</button>
     </div>
   </header>
 
@@ -36,7 +37,7 @@
   <main class="home-content">
     <section class="welcome-section">
       <p class="eyebrow">Collection Portal</p>
-      <h2>Welcome, <span data-role-label>Driver</span></h2>
+      <h2>Welcome, <span data-user-name></span></h2>
       <p>
         Record each pickup in under a minute: scan the QR code on the bin, tap a few answers, and snap a photo.
         Supervisors and Office of Sustainability staff use the records to right-size pickups and fix problems early.
@@ -66,10 +67,11 @@
   </main>
 
   <footer>
-    <p>Signed in as <span data-role-label>Driver</span></p>
+    <p>Signed in as <span data-user-name></span> (<span data-role-label></span>)</p>
   </footer>
 
   <script src="data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
