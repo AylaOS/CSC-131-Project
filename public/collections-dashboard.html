@@ -389,9 +389,10 @@
       <h1>Pickup Dashboard</h1>
     </div>
 
-    <div class="role-indicator">
-      <label for="role-select">Current role (demo)</label>
-      <select id="role-select"></select>
+    <div class="role-indicator user-box">
+      <span class="user-name" data-user-name></span>
+      <span class="user-role" data-role-label></span>
+      <button type="button" class="secondary-button logout-button" data-logout>Log out</button>
     </div>
 
   </header>
@@ -733,12 +734,11 @@
   <footer>
     <p>
       Signed in as
-      <span data-role-label>Driver</span>
-    </p>
+      <span data-user-name></span> (<span data-role-label></span>)</p>
   </footer>
 
   <dialog id="details"></dialog>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="app.js"></script>
   <script src="dashboard.js"></script>
 
