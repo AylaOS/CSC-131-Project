@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded",() => {
             specialReq.classList.toggle("valid", specialCharValid);
             matchReq.classList.toggle("valid", matchValid);
 
-            return (lengthValid && uppercaseValid && lowercaseValid && numberValid && specialCharValid && matchReq);
+            return (lengthValid && uppercaseValid && lowercaseValid && numberValid && specialCharValid && matchValid);
         }
 
         newPassword.addEventListener("input", checkPasswordRequirements);
