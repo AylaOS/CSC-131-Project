@@ -19,9 +19,15 @@ const MAX_PHOTO_BYTES = 2 * 1024 * 1024; //after the browser's compression, phot
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      "script-src": ["'self'", "https://esm.sh", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-      "connect-src": ["'self'", "https://*.supabase.co", "wss://*.supabase.co", "https://esm.sh"],
-      "img-src": ["'self'", "data:", "blob:", "https://*.supabase.co"],
+      //Google Maps entries follow Google's CSP guide for the Maps JavaScript API (collections map.html)
+      "script-src": ["'self'", "https://esm.sh", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com",
+        "https://*.googleapis.com", "https://*.gstatic.com", "https://*.google.com", "https://*.ggpht.com", "https://*.googleusercontent.com", "blob:", "'unsafe-eval'"],
+      "connect-src": ["'self'", "https://*.supabase.co", "wss://*.supabase.co", "https://esm.sh",
+        "https://*.googleapis.com", "https://*.google.com", "https://*.gstatic.com", "data:", "blob:"],
+      "img-src": ["'self'", "data:", "blob:", "https://*.supabase.co",
+        "https://*.googleapis.com", "https://*.gstatic.com", "https://*.google.com", "https://*.googleusercontent.com"],
+      "frame-src": ["https://*.google.com"],
+      "worker-src": ["blob:"],
       //so site still works over http://localhost.
       "upgrade-insecure-requests": process.env.NODE_ENV === "production" ? [] : null
     }
