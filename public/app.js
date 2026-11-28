@@ -10,7 +10,7 @@ the server (server/auth.js), so editing this file can't unlock any data. */
 
   const PAGES = {
     driver: ["index", "survey"],
-    supervisor: ["index", "survey", "dashboard", "reports", "collection-history", "map"]
+    supervisor: ["index", "survey", "dashboard", "reports", "history", "map"]
   };
   const LABELS = { driver: "Driver", supervisor: "Supervisor" };
 
