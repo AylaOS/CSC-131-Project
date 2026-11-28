@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#043927">
+  <title>History · Waste Collection</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+
+  <script defer src="data.js"></script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="collection-history.js"></script>
+
+  <style>
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    .tab {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid transparent;
+      border-radius: 8px 8px 0 0;
+      color: var(--green);
+      background: white;
+      cursor: pointer;
+      font: inherit;
+      font-weight: bold;
+    }
+    .tab:hover { background: var(--light); }
+    .tab.active {
+      border-bottom-color: var(--gold);
+      background: var(--gold-light);
+    }
+    #table { margin-top: 16px; }
+    .check-col { width: 36px; }
+    .badge + .badge { margin-left: 4px; }
+  </style>
+</head>
+<body data-page="history">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Office of Sustainability</p>
+      <h1>Record History</h1>
+    </div>
+
+    <div class="role-indicator user-box">
+      <span class="user-name" data-user-name></span>
+      <span class="user-role" data-role-label></span>
+      <button type="button"
+        class="secondary-button logout-button"
+        data-logout>Log out</button>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a data-page-link="index"
+      href="index.html">Home</a>
+    <a data-page-link="survey"
+      href="survey.html">Collection Survey</a>
+    <a data-page-link="dashboard"
+      href="collections-dashboard.html">Dashboard</a>
+    <a data-page-link="reports"
+      href="reports.html">Reports</a>
+    <a data-page-link="map"
+      href="collections%20map.html">Map</a>
+    <a data-page-link="history" class="active"
+      aria-current="page" href="history.html">History</a>
+    <span id="connection-status"
+      class="connection-status"></span>
+  </nav>
+
+  <main class="page-container">
+    <section class="panel welcome-section">
+      <p class="eyebrow">Collection Management</p>
+      <h2>Collection Record History</h2>
+      <p>
+        Review submitted collection records and hide
+        mistakes. Removing a record only hides it from
+        the website. The data stays in the database, and only
+        a database admin can erase it for good.
+      </p>
+      <p id="count" class="muted" role="status">
+        Loading collection records…</p>
+      <button type="button" class="secondary-button no-print"
+        id="refresh">Refresh data</button>
+    </section>
+
+    <div id="status" class="notice" role="status" hidden></div>
+
+    <section class="filter-bar no-print" id="filters"
+      aria-label="Filters">
+      <div class="filter-field">
+        <label for="f-search">Search</label>
+        <input type="search" id="f-search"
+          placeholder="Bin, location or driver">
+      </div>
+      <div class="filter-field">
+        <label for="f-from">From</label>
+        <input type="date" id="f-from">
+      </div>
+      <div class="filter-field">
+        <label for="f-to">To</label>
+        <input type="date" id="f-to">
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs no-print" role="tablist"
+        aria-label="History views">
+        <button type="button" class="tab active" role="tab"
+          id="tab-records" data-tab="records"
+          aria-selected="true">Records</button>
+        <button type="button" class="tab" role="tab"
+          id="tab-removed" data-tab="removed"
+          aria-selected="false">Removed</button>
+        <button type="button" class="tab" role="tab"
+          id="tab-log" data-tab="log"
+          aria-selected="false">Activity log</button>
+      </div>
+
+      <div class="button-row no-print">
+        <button type="button" class="primary-button"
+          id="act-remove" disabled>Remove selected</button>
+        <button type="button" class="primary-button"
+          id="act-restore" disabled hidden>Restore selected</button>
+      </div>
+
+      <div class="table-wrap" id="table" role="tabpanel"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Signed in as <span data-user-name></span>
+      (<span data-role-label></span>)</p>
+  </footer>
+
+</body>
+</html>

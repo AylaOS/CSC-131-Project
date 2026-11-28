@@ -1022,6 +1022,54 @@ footer {
   border-top: 4px solid var(--gold);
 }
 
+/* ---------- History page ---------- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-bottom: 3px solid transparent;
+  border-radius: 8px 8px 0 0;
+  color: var(--green);
+  background: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+}
+
+.tab:hover {
+  background: var(--light);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.tab.active {
+  border-bottom-color: var(--gold);
+  background: var(--gold-light);
+}
+
+#table {
+  margin-top: 16px;
+}
+
+.check-col {
+  width: 36px;
+}
+
+.badge + .badge {
+  margin-left: 4px;
+}
+
+
 /* ---------- Phone / tablet ---------- */
 
 @media (max-width: 900px) {
